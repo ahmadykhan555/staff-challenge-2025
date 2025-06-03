@@ -1,8 +1,11 @@
+import { Card, Headline, Text } from "@freenow/wave";
+
 function App() {
   return (
-    <>
-      <div className='text-3xl'>App Init</div>
-    </>
+    <Card level={200}>
+      <Headline>Welcome Misbah</Headline>
+      <Text>FREE NOW Design System</Text>
+    </Card>
   );
 }
 
