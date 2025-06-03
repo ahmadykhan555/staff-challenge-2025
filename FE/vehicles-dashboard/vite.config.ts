@@ -5,7 +5,7 @@ const DEFAULT_PORT = 3000;
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
-  console.log(env);
+
   const serverConfig: ServerOptions = {
     open: true,
     port: typeof env.VITE_FE_PORT === 'string' ? JSON.parse(env.VITE_FE_PORT) : DEFAULT_PORT,
