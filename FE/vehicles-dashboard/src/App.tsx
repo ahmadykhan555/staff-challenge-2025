@@ -1,11 +1,18 @@
-import { Card, Headline, Text } from '@freenow/wave';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { ROUTES } from './constants';
+
+import Home from './pages/Home';
+import DefaultLayout from './layouts/DefaultLayout';
 
 function App() {
   return (
-    <Card level={200}>
-      <Headline>Welcome User</Headline>
-      <Text>FREE NOW Design System</Text>
-    </Card>
+    <Router>
+      <Routes>
+        <Route path="/" element={<DefaultLayout />}>
+          <Route path={ROUTES.home} index element={<Home />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
