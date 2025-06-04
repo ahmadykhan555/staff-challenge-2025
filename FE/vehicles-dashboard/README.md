@@ -12,6 +12,10 @@ All app secrets, configurations etc are made configurable via environments
 
 Prettier has been configured to make sure clean code and started formatting practices are followed.
 
+### Husky
+
+To ensure coding standards are maintained, husky is configured to run typecheck and linting on `pre-commit` and upon `pre-push` addition tests will be run
+
 ### Code Organization
 
 The codebase has been organized into logical directories for clear structure. The aim here is to isolate the business logic layer from the UI layer to ensure maximum flexibility. We will make use of `components` & `pages` for UI. Components are further divided into Base and Feature components with Base components being dumb components.
