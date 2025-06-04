@@ -1,17 +1,23 @@
-import { useEffect, useState } from 'react';
-import type { NavigationItem } from '../types';
-import { fetchNavigation } from '../api';
+import { Link } from 'react-router-dom';
 
 const AppHeader = () => {
-  const [navigationItems, setNavigationItems] = useState<NavigationItem[]>([]);
-
-  useEffect(() => {
-    fetchNavigation();
-  }, []);
-
+  const items = [
+    {
+      to: '/',
+      displayName: 'home',
+    },
+    {
+      to: '/dashboard',
+      displayName: 'Dashboard',
+    },
+  ];
   return (
-    <header>
-      <p>navigationItems: {navigationItems.length}</p>
+    <header className="flex border-b shadow-sm">
+      {items.map((item) => (
+        <Link className="border-r md:px-8 px-4 py-3 uppercase font-semibold" to={item.to}>
+          {item.displayName}
+        </Link>
+      ))}
     </header>
   );
 };
