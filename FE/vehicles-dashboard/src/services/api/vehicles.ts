@@ -11,7 +11,15 @@ export const fetchFreeNowVehicles = (): Promise<Vehicle[]> => {
     })
       .then(async (response) => {
         const result: { placemarks: Vehicle[] } = await response.json();
-        resolve(result.placemarks?.slice(0, 11));
+        const correctedResult: Vehicle[] = result.placemarks.map((placement) => ({
+          ...placement,
+          coordinates: [
+            placement.coordinates[1],
+            placement.coordinates[0],
+            placement.coordinates[2],
+          ],
+        }));
+        resolve(correctedResult.slice(0, 25));
       })
       .catch(() => reject());
   });

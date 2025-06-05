@@ -14,7 +14,11 @@ const AppHeader = () => {
   return (
     <header className="flex border-b shadow-sm">
       {items.map((item) => (
-        <Link className="border-r md:px-8 px-4 py-3 uppercase font-semibold" to={item.to}>
+        <Link
+          key={item.to}
+          className="border-r md:px-8 px-4 py-3 uppercase font-semibold"
+          to={item.to}
+        >
           {item.displayName}
         </Link>
       ))}
