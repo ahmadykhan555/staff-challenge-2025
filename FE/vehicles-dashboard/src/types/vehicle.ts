@@ -12,3 +12,8 @@ export type Vehicle = {
   state: VehicleState;
   licencePlate: string;
 };
+
+export type VehiclesState = {
+  list: Vehicle[];
+  selectedVehicle: Vehicle | null;
+};
