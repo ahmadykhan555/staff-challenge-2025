@@ -1,21 +1,15 @@
 import type React from 'react';
-import {
-  Table as WaveTable,
-  TableCell,
-  TableRow,
-  TableSortableHeaderCell,
-  useSortBy,
-  type SortingDirection,
-} from '@freenow/wave';
 
 import { orderBy } from 'lodash';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Table: React.FC<{
   columns: { displayName: string; id: string }[];
   content: any[];
   sortById: string;
-}> = ({ columns, content, sortById }) => {
+  activeRowId?: string;
+  onRowClicked: (id: number) => void;
+}> = ({ columns, content, sortById, activeRowId, onRowClicked }) => {
   const [sortedData, setSortedData] = useState<any[]>([]);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
@@ -35,10 +29,14 @@ const Table: React.FC<{
   return (
     <>
       <table className="border w-full">
-        <thead className="font-bold uppercase text-center">
-          <tr>
+        <thead className="font-bold uppercase text-center border-b ">
+          <tr className="sticky -top-1 bg-white z-10 shadow-sm">
             {columns.map(({ displayName, id }) => (
-              <th key={id} onClick={id === sortById ? toggleSortDirection : undefined}>
+              <th
+                className=" border-l  p-4"
+                key={id}
+                onClick={id === sortById ? toggleSortDirection : undefined}
+              >
                 {displayName}
               </th>
             ))}
@@ -46,9 +44,11 @@ const Table: React.FC<{
         </thead>
         <tbody>
           {sortedData.map((entry) => (
-            <tr key={entry.id}>
+            <tr key={entry.id} onClick={() => onRowClicked(entry.id)}>
               {Object.keys(entry).map((key, idx) => (
-                <td key={idx}>{entry[key]}</td>
+                <td className="p-4 text-center" key={idx}>
+                  {entry[key]}
+                </td>
               ))}
             </tr>
           ))}

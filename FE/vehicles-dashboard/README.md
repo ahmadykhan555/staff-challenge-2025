@@ -28,4 +28,4 @@ The decision was between file based routing with Next.Js or routing with React R
 
 ### State Management
 
-The decision here was between React-Redux (with toolkit) vs Zustand. Though Zustand is a great light-weight option for this coding challenge, redux is a much better choice for enterprise solutions with complex states and big teams. To keep this application future-proof I chose react-redux with toolkit for `Stability` and `Structure` which is essential for an enterprise application
+The decision here was between React-Redux (with toolkit) vs Zustand. Though Zustand is a great light-weight option for this coding challenge, redux is a much better choice for enterprise solutions with complex states and big teams. To keep this application future-proof I chose react-redux with toolkit for `Stability` and `Structure` which is essential for an enterprise application.
