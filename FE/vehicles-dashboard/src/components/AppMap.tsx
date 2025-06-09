@@ -9,7 +9,7 @@ import 'leaflet/dist/leaflet.css';
 const GLOBAL_MAP_CENTER: LatLngExpression = [53.5511, 9.9937];
 
 import type { LatLngBoundsExpression, LatLngExpression, PointExpression } from 'leaflet';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import type { CarType } from '../types';
 
 const freeNowCarIcon = L.icon({
@@ -60,7 +60,11 @@ const AppMap: React.FC<{
             }}
             icon={marker.type === 'free now' ? freeNowCarIcon : shareNowCarIcon}
           >
-            {marker.text && <Popup>{marker.text}</Popup>}
+            {marker.text && (
+              <Popup autoClose={false} closeOnClick={false}>
+                {marker.text}
+              </Popup>
+            )}
           </Marker>
         ))}
 

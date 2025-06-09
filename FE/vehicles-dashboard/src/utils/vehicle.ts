@@ -34,7 +34,6 @@ export const transformVehicleToTableRow = ({
   condition,
   fuel,
 }: Vehicle): TableVehicle => {
-  debugger;
   return {
     carType,
     licencePlate,
