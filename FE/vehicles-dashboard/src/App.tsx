@@ -10,7 +10,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<DefaultLayout />}>
-          <Route path={ROUTES.home} index element={<Home />} />
+          <Route path={ROUTES.home} caseSensitive index element={<Home />} />
           <Route path={ROUTES.dashboard} index element={<Dashboard />} />
         </Route>
       </Routes>
