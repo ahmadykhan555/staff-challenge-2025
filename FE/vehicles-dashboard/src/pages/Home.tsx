@@ -6,7 +6,7 @@ type HomeProps = {};
 const HomePage: React.FC<HomeProps> = () => {
   useDocumentTitle('Now!');
   return (
-    <section className="app-wrapper ">
+    <section>
       <Card>
         <Headline size={'xl'}>Welcome to Free Now Dashboard</Headline>
         <Button variant={'primary'}>Lets explore</Button>
