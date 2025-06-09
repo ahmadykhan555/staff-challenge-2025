@@ -11,25 +11,14 @@ export const fetchShareNowVehicles = (): Promise<Vehicle[]> => {
       .then(async (response) => {
         const result: { placemarks: ShareNowVehicle[] } = await response.json();
         const correctedResult: ShareNowVehicle[] = result.placemarks.map(
-          ({
-            address = 'NA',
-            condition = 'NA',
-            engineType = 'NA',
-            fuel = 'NA',
-            id,
-            licencePlate,
-            state = 'NA',
-            coordinates,
-          }) => ({
+          ({ address = '-', condition = '-', licencePlate, state = '-', id, coordinates }) => ({
             address,
             condition,
-            engineType,
-            fuel,
-            id,
             licencePlate,
             state,
-            coordinates: [coordinates[1], coordinates[0], coordinates[2]],
             carType: 'share now',
+            id,
+            coordinates: [coordinates[1], coordinates[0], coordinates[2]],
           })
         );
         resolve(orderBy(correctedResult, 'licencePlate', 'asc'));
@@ -47,25 +36,14 @@ export const fetchFreeNowVehicles = (): Promise<Vehicle[]> => {
       .then(async (response) => {
         const result: { poiList: FreeNowVehicle[] } = await response.json();
         const correctedResult: Vehicle[] = result.poiList.map(
-          ({
-            address = 'NA',
-            condition = 'NA',
-            engineType = 'NA',
-            fuel = 'NA',
-            id,
-            licencePlate,
-            state = 'NA',
-            coordinate,
-          }) => ({
+          ({ address = '-', condition = '-', id, licencePlate, state = '-', coordinate }) => ({
             address,
             condition,
-            engineType,
-            fuel,
-            id,
             licencePlate,
             state,
-            coordinates: [coordinate?.latitude || 0, coordinate?.longitude || 0],
             carType: 'free now',
+            id,
+            coordinates: [coordinate?.latitude || 0, coordinate?.longitude || 0],
           })
         );
 

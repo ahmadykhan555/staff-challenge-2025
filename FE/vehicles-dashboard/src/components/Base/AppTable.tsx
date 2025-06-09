@@ -2,6 +2,9 @@ import type React from 'react';
 
 import { orderBy } from 'lodash';
 import { useEffect, useState } from 'react';
+import FreeNowCarIcon from '../../assets/icons/map/free-now-car.svg';
+import ShareNowCarIcon from '../../assets/icons/map/share-now-car.svg';
+import type { CarType } from '../../types';
 
 const Table: React.FC<{
   columns: { displayName: string; id: string }[];
@@ -40,7 +43,7 @@ const Table: React.FC<{
 
   return (
     <>
-      <table className="w-full">
+      <table className="w-full ">
         <thead className="font-bold uppercase text-center border-b">
           <tr className="sticky -top-1 bg-white z-10 shadow-sm">
             {columns.map(({ displayName, id }) => (
@@ -61,11 +64,22 @@ const Table: React.FC<{
               onClick={() => {
                 onRowClicked(entry.id);
               }}
-              className={`bg-white cursor-pointer ${entry.id == activeRowId ? 'border-red-300 border !bg-red-100' : ''} hover:border-red-300 hover:border hover:!bg-red-100`}
+              className={`bg-white cursor-pointer border-b  ${entry.id == activeRowId ? 'border-red-300 border !bg-red-100' : ''} hover:border-red-300 hover:border hover:!bg-red-100`}
             >
               {Object.keys(entry).map((key, idx) => (
-                <td className="px-2 py-4 text-center text-sm" key={idx}>
-                  {entry[key]}
+                <td
+                  className="px-2 py-4 text-center text-sm whitespace-nowrap overflow-hidden text-ellipsis"
+                  key={idx}
+                >
+                  {key === 'carType' ? (
+                    (entry[key] as CarType) == 'free now' ? (
+                      <img className="size-10 mx-auto" src={FreeNowCarIcon} />
+                    ) : (
+                      <img className="size-10 mx-auto" src={ShareNowCarIcon} />
+                    )
+                  ) : (
+                    entry[key]
+                  )}
                 </td>
               ))}
             </tr>

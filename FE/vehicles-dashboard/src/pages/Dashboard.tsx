@@ -3,7 +3,7 @@ import { Skeleton } from '@freenow/wave';
 import AppTable from '../components/Base/AppTable';
 import AppMap from '../components/AppMap';
 import { fetchVehicles } from '../services/api';
-import { DEFAULT_VEHICLE_LISTING_COLUMNS } from '../constants/dashboard';
+import { DEFAULT_VEHICLE_LISTING_COLUMNS, PAGE_SIZE } from '../constants/dashboard';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { setVehiclesList, setSelectedVehicle } from '../store/vehiclesSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/state';
@@ -11,8 +11,6 @@ import type { LatLngBoundsExpression, LatLngExpression } from 'leaflet';
 import { isEqual } from 'lodash';
 import type { Vehicle } from '../types';
 import L from 'leaflet';
-
-const PAGE_SIZE = 10;
 
 type DashboardProps = {};
 const Dashboard: React.FC<DashboardProps> = () => {
@@ -49,7 +47,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
     setVehiclesForCurrentPage(vehiclesForFirstPage);
 
     setMapBounds(L.latLngBounds(vehiclesForFirstPage.map((v) => v.coordinates)));
-
     setIsLoading(false);
   };
 
@@ -69,13 +66,11 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
   const [mapBounds, setMapBounds] = useState<LatLngBoundsExpression>();
 
-  const [viewType, setViewType] = useState<'stacked' | 'side-by-side'>('stacked');
+  const [viewType] = useState<'stacked' | 'side-by-side'>('stacked');
 
   return (
     <>
-      <section
-        className={`flex ${viewType === 'stacked' ? 'flex-col' : 'flex-row'} gap-4 md:gap-y-8 bg-white h-full`}
-      >
+      <section className={`bg-white h-full flex flex-col gap-4 md:gap-y-8  `}>
         {isLoading ? (
           <>
             <Skeleton animated className="border !bg-slate-50 !w-full md:!h-2/5" />
@@ -84,7 +79,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
         ) : (
           <>
             <div
-              className={`${viewType === 'stacked' ? 'md:h-2/5' : 'flex-1 max-h-screen'} xl:container mx-auto`}
+              className={`${viewType === 'stacked' ? 'max-md:h-1/2 md:!h-2/5  w-full' : 'flex-1 max-h-screen'} xl:container md:mx-auto`}
             >
               <AppMap
                 center={selectedVehicle?.coordinates}
