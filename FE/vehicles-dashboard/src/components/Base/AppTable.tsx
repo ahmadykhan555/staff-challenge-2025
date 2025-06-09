@@ -7,9 +7,21 @@ const Table: React.FC<{
   columns: { displayName: string; id: string }[];
   content: any[];
   sortById: string;
+  currentPage?: number;
   activeRowId?: string;
   onRowClicked: (id: number) => void;
-}> = ({ columns, content, sortById, activeRowId, onRowClicked }) => {
+  onNextClicked: () => void;
+  onPrevClicked: () => void;
+}> = ({
+  columns,
+  content,
+  sortById,
+  activeRowId,
+  currentPage = 1,
+  onRowClicked,
+  onNextClicked,
+  onPrevClicked,
+}) => {
   const [sortedData, setSortedData] = useState<any[]>([]);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
@@ -29,11 +41,11 @@ const Table: React.FC<{
   return (
     <>
       <table className="w-full">
-        <thead className="font-bold uppercase text-center border-b ">
+        <thead className="font-bold uppercase text-center border-b">
           <tr className="sticky -top-1 bg-white z-10 shadow-sm">
             {columns.map(({ displayName, id }) => (
               <th
-                className="cursor-pointer border-l  p-4"
+                className="cursor-pointer border-l text-sm  p-4"
                 key={id}
                 onClick={id === sortById ? toggleSortDirection : undefined}
               >
@@ -49,10 +61,10 @@ const Table: React.FC<{
               onClick={() => {
                 onRowClicked(entry.id);
               }}
-              className={`bg-white cursor-pointer ${entry.id == activeRowId ? 'border-neutral-300 border !bg-neutral-100' : ''} hover:border-neutral-300 hover:border hover:!bg-neutral-100`}
+              className={`bg-white cursor-pointer ${entry.id == activeRowId ? 'border-red-300 border !bg-red-100' : ''} hover:border-red-300 hover:border hover:!bg-red-100`}
             >
               {Object.keys(entry).map((key, idx) => (
-                <td className="px-2 py-4 text-center" key={idx}>
+                <td className="px-2 py-4 text-center text-sm" key={idx}>
                   {entry[key]}
                 </td>
               ))}
@@ -60,6 +72,15 @@ const Table: React.FC<{
           ))}
         </tbody>
       </table>
+      <div className="flex items-center space-x-6 border-x border mx-auto w-[300px] sticky bottom-0 bg-white z-10 shadow-md">
+        <button className="px-4 py-2 border-r flex-1 " onClick={onPrevClicked}>
+          Prev
+        </button>
+        <p className="border border-transparent"> {currentPage}</p>
+        <button className="px-4 py-2 border-l flex-1" onClick={onNextClicked}>
+          Next
+        </button>
+      </div>
     </>
   );
 };

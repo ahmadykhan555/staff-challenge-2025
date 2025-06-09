@@ -76,7 +76,11 @@ export const fetchFreeNowVehicles = (): Promise<Vehicle[]> => {
 };
 
 export const fetchVehicles = async () => {
-  return await Promise.all([fetchShareNowVehicles(), fetchFreeNowVehicles()]);
+  const [shareNowVehicles, freeNowVehicles] = await Promise.all([
+    fetchShareNowVehicles(),
+    fetchFreeNowVehicles(),
+  ]);
+  return orderBy([...shareNowVehicles, ...freeNowVehicles], 'licencePlate', 'asc');
 };
 
 const getVehiclesEndpoint = (type: 'share-now' | 'free-now') => {
