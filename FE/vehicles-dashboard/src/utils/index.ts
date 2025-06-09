@@ -5,9 +5,24 @@ export const getVehicleConditionString = ({
   fuel,
 }: {
   condition: VehicleCondition;
-  fuel?: Pick<Vehicle, 'fuel'>;
+  fuel?: number;
 }) => {
-  return `${condition} - ${fuel}`;
+  return `${condition} ${getFuelString(fuel)}`;
+};
+
+const getFuelString = (fuel?: number) => {
+  if (!fuel && fuel !== 0) {
+    return '';
+  }
+  if (fuel > 80) {
+    return 'Full';
+  }
+
+  if (fuel < 50) {
+    return 'Low';
+  }
+
+  return 'Normal';
 };
 
 export const mapVehicleDataToTable = ({
@@ -25,6 +40,6 @@ export const mapVehicleDataToTable = ({
     coordinates,
     address,
     state,
-    condition: getVehicleConditionString({ condition, fuel: (fuel || -1) as any }), // fix type
+    condition: getVehicleConditionString({ condition, fuel }),
   };
 };

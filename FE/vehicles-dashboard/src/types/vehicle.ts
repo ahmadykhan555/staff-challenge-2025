@@ -15,7 +15,7 @@ export type Vehicle = {
   address: string;
   engineType?: EngineType;
   condition: VehicleCondition;
-  fuel?: number | '-';
+  fuel?: number;
   state: VehicleState;
   licencePlate: string;
   coordinates: LatLngExpression;
