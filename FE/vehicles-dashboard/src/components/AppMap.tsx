@@ -8,7 +8,7 @@ import 'leaflet/dist/leaflet.css';
 
 const GLOBAL_MAP_CENTER: LatLngExpression = [53.5511, 9.9937];
 
-import type { LatLngExpression } from 'leaflet';
+import type { LatLngBoundsExpression, LatLngExpression } from 'leaflet';
 import { useEffect } from 'react';
 import type { CarType } from '../types';
 
@@ -35,8 +35,9 @@ type MapMarker = {
 const AppMap: React.FC<{
   markers: MapMarker[];
   center?: LatLngExpression;
+  bounds?: LatLngBoundsExpression;
   onMarkerClicked: (coordinates: LatLngExpression) => void;
-}> = ({ markers, center, onMarkerClicked }) => {
+}> = ({ markers, center, bounds, onMarkerClicked }) => {
   return (
     <>
       <MapContainer
@@ -63,6 +64,7 @@ const AppMap: React.FC<{
         ))}
 
         <DynamicMapCenter center={center ?? GLOBAL_MAP_CENTER} />
+        {bounds && <DynamicMapBounds bounds={bounds} />}
       </MapContainer>
     </>
   );
@@ -78,4 +80,17 @@ const DynamicMapCenter: React.FC<{ center: LatLngExpression }> = ({ center }) =>
 
   return <></>;
 };
+
+const DynamicMapBounds: React.FC<{ bounds: LatLngBoundsExpression }> = ({ bounds }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    map.fitBounds(bounds, {
+      animate: true,
+    });
+  }, [bounds]);
+
+  return <></>;
+};
+
 export default AppMap;

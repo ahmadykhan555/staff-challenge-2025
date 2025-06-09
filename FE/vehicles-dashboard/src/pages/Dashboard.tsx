@@ -7,9 +7,12 @@ import { DEFAULT_VEHICLE_LISTING_COLUMNS } from '../constants/dashboard';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { setVehiclesList, setSelectedVehicle } from '../store/vehiclesSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/state';
-import type { LatLngExpression } from 'leaflet';
+import type { LatLngBoundsExpression, LatLngExpression } from 'leaflet';
 import { isEqual } from 'lodash';
 import type { Vehicle } from '../types';
+import L from 'leaflet';
+
+const PAGE_SIZE = 10;
 
 type DashboardProps = {};
 const Dashboard: React.FC<DashboardProps> = () => {
@@ -17,7 +20,8 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [vehiclesForCurrentPage, setVehiclesForCurrentPage] = useState<Vehicle[]>([]);
-  const [pageNumber, setPageNumber] = useState<number>();
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [lastSliceIndex, setLastSliceIndex] = useState<number>(10);
   const vehicles = useAppSelector((state) => state.vehiclesSlice.list);
 
   const selectedVehicle = useAppSelector((state) => state.vehiclesSlice.selectedVehicle);
@@ -28,16 +32,25 @@ const Dashboard: React.FC<DashboardProps> = () => {
   }, []);
 
   useEffect(() => {
-    setVehiclesForCurrentPage(vehicles.slice(0, 10));
+    if (pageNumber === 1 || pageNumber <= 0) {
+      setVehiclesForCurrentPage(vehicles.slice(0, PAGE_SIZE));
+      setLastSliceIndex(PAGE_SIZE);
+    } else {
+      setVehiclesForCurrentPage(vehicles.slice(lastSliceIndex, lastSliceIndex + PAGE_SIZE));
+      setLastSliceIndex(lastSliceIndex + PAGE_SIZE);
+    }
   }, [pageNumber]);
 
   const initData = async () => {
     setIsLoading(true);
-    const [freeNowVehicles, shareNowVehicles] = await fetchVehicles();
-    const allVehicles = [...freeNowVehicles, ...shareNowVehicles];
-    setIsLoading(false);
+    const allVehicles = await fetchVehicles();
+    const vehiclesForFirstPage = allVehicles.slice(0, PAGE_SIZE);
     dispatch(setVehiclesList(allVehicles));
-    setVehiclesForCurrentPage(allVehicles.slice(0, 10));
+    setVehiclesForCurrentPage(vehiclesForFirstPage);
+
+    setMapBounds(L.latLngBounds(vehiclesForFirstPage.map((v) => v.coordinates)));
+
+    setIsLoading(false);
   };
 
   const handleVehicleSelected = (id: number) => {
@@ -53,6 +66,8 @@ const Dashboard: React.FC<DashboardProps> = () => {
       dispatch(setSelectedVehicle(matchingVehicle));
     }
   };
+
+  const [mapBounds, setMapBounds] = useState<LatLngBoundsExpression>();
 
   const [viewType, setViewType] = useState<'stacked' | 'side-by-side'>('stacked');
 
@@ -78,6 +93,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                   text: vehicle.licencePlate,
                   type: vehicle.carType,
                 }))}
+                bounds={mapBounds}
                 onMarkerClicked={(markerCoordinates) => handleSelectedMarker(markerCoordinates)}
               />
             </div>
@@ -89,6 +105,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 content={vehiclesForCurrentPage}
                 activeRowId={selectedVehicle?.id.toString()}
                 onRowClicked={(id) => handleVehicleSelected(id)}
+                onNextClicked={() => setPageNumber(pageNumber + 1)}
+                onPrevClicked={() => setPageNumber(pageNumber - 1)}
+                currentPage={pageNumber}
               />
             </div>
           </>
