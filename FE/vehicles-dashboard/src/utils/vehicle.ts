@@ -25,7 +25,7 @@ const getFuelString = (fuel?: number) => {
   return 'Normal';
 };
 
-export const mapVehicleDataToTable = ({
+export const transformVehicleToTableRow = ({
   address,
   carType,
   coordinates,

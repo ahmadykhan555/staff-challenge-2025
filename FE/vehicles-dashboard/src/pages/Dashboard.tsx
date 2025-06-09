@@ -11,7 +11,10 @@ import type { LatLngBoundsExpression, LatLngExpression } from 'leaflet';
 import { isEqual } from 'lodash';
 import type { Vehicle } from '../types';
 import L from 'leaflet';
-import { mapVehicleDataToTable } from '../utils';
+import { transformVehicleToTableRow } from '../utils';
+import { useSearchParams } from 'react-router-dom';
+import TableHeaderRow from '../components/Dashboard/TableHeaderRow';
+import TableDataRow from '../components/Dashboard/TableDataRow';
 
 type DashboardProps = {};
 const Dashboard: React.FC<DashboardProps> = () => {
@@ -21,7 +24,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
   const [vehiclesForCurrentPage, setVehiclesForCurrentPage] = useState<Vehicle[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [lastSliceIndex, setLastSliceIndex] = useState<number>(10);
+  const [mapBounds, setMapBounds] = useState<LatLngBoundsExpression>();
   const vehicles = useAppSelector((state) => state.vehiclesSlice.list);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const selectedVehicle = useAppSelector((state) => state.vehiclesSlice.selectedVehicle);
   const dispatch = useAppDispatch();
@@ -31,13 +36,18 @@ const Dashboard: React.FC<DashboardProps> = () => {
   }, []);
 
   useEffect(() => {
+    let vehicleSlice: Vehicle[] = [];
     if (pageNumber === 1 || pageNumber <= 0) {
-      setVehiclesForCurrentPage(vehicles.slice(0, PAGE_SIZE));
+      vehicleSlice = vehicles.slice(0, PAGE_SIZE);
+      setVehiclesForCurrentPage(vehicleSlice);
       setLastSliceIndex(PAGE_SIZE);
     } else {
-      setVehiclesForCurrentPage(vehicles.slice(lastSliceIndex, lastSliceIndex + PAGE_SIZE));
+      vehicleSlice = vehicles.slice(lastSliceIndex, lastSliceIndex + PAGE_SIZE);
+      setVehiclesForCurrentPage(vehicleSlice);
       setLastSliceIndex(lastSliceIndex + PAGE_SIZE);
     }
+    setMapBounds(L.latLngBounds(vehicleSlice.map((v) => v.coordinates)));
+    setSearchParams({ page: pageNumber.toString() });
   }, [pageNumber]);
 
   const initData = async () => {
@@ -46,7 +56,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
     const vehiclesForFirstPage = allVehicles.slice(0, PAGE_SIZE);
     dispatch(setVehiclesList(allVehicles));
     setVehiclesForCurrentPage(vehiclesForFirstPage);
-
     setMapBounds(L.latLngBounds(vehiclesForFirstPage.map((v) => v.coordinates)));
     setIsLoading(false);
   };
@@ -65,9 +74,10 @@ const Dashboard: React.FC<DashboardProps> = () => {
     }
   };
 
-  const [mapBounds, setMapBounds] = useState<LatLngBoundsExpression>();
-
-  const [viewType] = useState<'stacked' | 'side-by-side'>('stacked');
+  const handlePageSelect = (direction: 'next' | 'prev') => {
+    const newPage = direction === 'next' ? pageNumber + 1 : pageNumber - 1;
+    setPageNumber(newPage <= 0 ? 1 : newPage);
+  };
 
   return (
     <>
@@ -79,9 +89,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
           </>
         ) : (
           <>
-            <div
-              className={`${viewType === 'stacked' ? 'max-md:h-1/2 md:!h-2/5  w-full' : 'flex-1 max-h-screen'} xl:container md:mx-auto`}
-            >
+            <div className={`max-md:h-1/2 md:!h-2/5  w-full xl:container md:mx-auto`}>
               <AppMap
                 center={selectedVehicle?.coordinates}
                 markers={vehiclesForCurrentPage.map((vehicle) => ({
@@ -94,16 +102,29 @@ const Dashboard: React.FC<DashboardProps> = () => {
               />
             </div>
 
-            <div className="flex-1 max-h-screen !rounded-md overflow-auto container w-full mx-auto">
+            <div className="flex-1 max-h-screen !rounded-md overflow-auto xl:container w-full mx-auto">
               <AppTable
                 sortById="licencePlate"
                 columns={DEFAULT_VEHICLE_LISTING_COLUMNS}
-                content={vehiclesForCurrentPage.map((vehicle) => mapVehicleDataToTable(vehicle))}
+                content={vehiclesForCurrentPage.map((vehicle) =>
+                  transformVehicleToTableRow(vehicle)
+                )}
                 activeRowId={selectedVehicle?.licencePlate}
                 onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
-                onNextClicked={() => setPageNumber(pageNumber + 1)}
-                onPrevClicked={() => setPageNumber(pageNumber - 1)}
+                onNextClicked={() => handlePageSelect('next')}
+                onPrevClicked={() => handlePageSelect('prev')}
                 currentPage={pageNumber}
+                headerRow={<TableHeaderRow />}
+                tableDataNode={vehiclesForCurrentPage.map((entry) => {
+                  const mappedData = transformVehicleToTableRow(entry);
+                  return (
+                    <TableDataRow
+                      entry={mappedData}
+                      activeRowId={selectedVehicle?.licencePlate}
+                      onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
+                    />
+                  );
+                })}
               />
             </div>
           </>
