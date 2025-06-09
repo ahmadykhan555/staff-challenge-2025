@@ -11,6 +11,7 @@ import type { LatLngBoundsExpression, LatLngExpression } from 'leaflet';
 import { isEqual } from 'lodash';
 import type { Vehicle } from '../types';
 import L from 'leaflet';
+import { mapVehicleDataToTable } from '../utils';
 
 type DashboardProps = {};
 const Dashboard: React.FC<DashboardProps> = () => {
@@ -50,8 +51,8 @@ const Dashboard: React.FC<DashboardProps> = () => {
     setIsLoading(false);
   };
 
-  const handleVehicleSelected = (id: number) => {
-    const matchingVehicle = vehicles.find((vehicle) => vehicle.id === id);
+  const handleVehicleSelected = (licencePlate: string) => {
+    const matchingVehicle = vehicles.find((vehicle) => vehicle.licencePlate === licencePlate);
     if (matchingVehicle) {
       dispatch(setSelectedVehicle(matchingVehicle));
     }
@@ -97,9 +98,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
               <AppTable
                 sortById="licencePlate"
                 columns={DEFAULT_VEHICLE_LISTING_COLUMNS}
-                content={vehiclesForCurrentPage}
-                activeRowId={selectedVehicle?.id.toString()}
-                onRowClicked={(id) => handleVehicleSelected(id)}
+                content={vehiclesForCurrentPage.map((vehicle) => mapVehicleDataToTable(vehicle))}
+                activeRowId={selectedVehicle?.licencePlate}
+                onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
                 onNextClicked={() => setPageNumber(pageNumber + 1)}
                 onPrevClicked={() => setPageNumber(pageNumber - 1)}
                 currentPage={pageNumber}

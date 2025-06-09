@@ -12,7 +12,7 @@ const Table: React.FC<{
   sortById: string;
   currentPage?: number;
   activeRowId?: string;
-  onRowClicked: (id: number) => void;
+  onRowClicked: (id: string) => void;
   onNextClicked: () => void;
   onPrevClicked: () => void;
 }> = ({
@@ -60,15 +60,15 @@ const Table: React.FC<{
         <tbody>
           {sortedData.map((entry) => (
             <tr
-              key={entry.id}
+              key={entry.licencePlate}
               onClick={() => {
-                onRowClicked(entry.id);
+                onRowClicked(entry.licencePlate);
               }}
-              className={`bg-white cursor-pointer border-b  ${entry.id == activeRowId ? 'border-red-300 border !bg-red-100' : ''} hover:border-red-300 hover:border hover:!bg-red-100`}
+              className={`bg-white cursor-pointer border-b  ${entry.licencePlate == activeRowId ? 'border-red-300 border !bg-red-100' : ''} hover:border-red-300 hover:border hover:!bg-red-100`}
             >
               {Object.keys(entry).map((key, idx) => (
                 <td
-                  className="px-2 py-4 text-center text-sm whitespace-nowrap overflow-hidden text-ellipsis"
+                  className="px-2 py-4 max-xl:!max-w-[200px] text-center text-sm whitespace-nowrap overflow-hidden text-ellipsis"
                   key={idx}
                 >
                   {key === 'carType' ? (

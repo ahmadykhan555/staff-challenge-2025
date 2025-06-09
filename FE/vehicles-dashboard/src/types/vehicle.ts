@@ -1,7 +1,7 @@
 import type { LatLngExpression } from 'leaflet';
 
 type EngineType = 'PETROL' | 'ELECTRIC' | '-';
-type VehicleCondition = 'GOOD' | 'BAD' | '-';
+export type VehicleCondition = 'GOOD' | 'BAD' | '-';
 type VehicleState = 'ACTIVE' | 'INACTIVE' | '-';
 
 type CoordinatesTuple = [number, number, number];
@@ -35,3 +35,7 @@ export type FreeNowVehicle = Vehicle & {
 };
 
 export type CarType = 'free now' | 'share now';
+
+export type TableVehicle = Omit<Vehicle, 'id' | 'engineType' | 'fuel' | 'condition'> & {
+  condition: string;
+};
