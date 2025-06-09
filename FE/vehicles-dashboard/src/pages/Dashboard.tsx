@@ -3,7 +3,7 @@ import { Skeleton } from '@freenow/wave';
 import AppTable from '../components/Base/AppTable';
 import AppMap from '../components/AppMap';
 import { fetchVehicles } from '../services/api';
-import { DEFAULT_VEHICLE_LISTING_COLUMNS, PAGE_SIZE } from '../constants/dashboard';
+import { PAGE_SIZE } from '../constants/dashboard';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { setVehiclesList, setSelectedVehicle } from '../store/vehiclesSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/state';
@@ -115,11 +115,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
             <div className="flex-1 max-h-screen !rounded-md overflow-auto xl:container w-full mx-auto">
               <AppTable
-                sortById="licencePlate"
-                columns={DEFAULT_VEHICLE_LISTING_COLUMNS}
-                content={vehiclesForCurrentPage.map((vehicle) =>
-                  transformVehicleToTableRow(vehicle)
-                )}
                 activeRowId={selectedVehicle?.licencePlate}
                 onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
                 onNextClicked={() => handlePageSelect('next')}

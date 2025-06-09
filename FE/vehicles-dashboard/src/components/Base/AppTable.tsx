@@ -1,11 +1,7 @@
 import type React from 'react';
-
-import { orderBy } from 'lodash';
-import { useEffect, useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 const Table: React.FC<{
-  columns: { displayName: string; id: string }[];
-
   currentPage?: number;
   activeRowId?: string;
   headerRow?: ReactNode;
