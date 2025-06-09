@@ -28,12 +28,12 @@ const Table: React.FC<{
 
   return (
     <>
-      <table className="border w-full">
+      <table className="w-full">
         <thead className="font-bold uppercase text-center border-b ">
           <tr className="sticky -top-1 bg-white z-10 shadow-sm">
             {columns.map(({ displayName, id }) => (
               <th
-                className=" border-l  p-4"
+                className="cursor-pointer border-l  p-4"
                 key={id}
                 onClick={id === sortById ? toggleSortDirection : undefined}
               >
@@ -44,9 +44,15 @@ const Table: React.FC<{
         </thead>
         <tbody>
           {sortedData.map((entry) => (
-            <tr key={entry.id} onClick={() => onRowClicked(entry.id)}>
+            <tr
+              key={entry.id}
+              onClick={() => {
+                onRowClicked(entry.id);
+              }}
+              className={`bg-white cursor-pointer ${entry.id == activeRowId ? 'border-neutral-300 border !bg-neutral-100' : ''} hover:border-neutral-300 hover:border hover:!bg-neutral-100`}
+            >
               {Object.keys(entry).map((key, idx) => (
-                <td className="p-4 text-center" key={idx}>
+                <td className="px-2 py-4 text-center" key={idx}>
                   {entry[key]}
                 </td>
               ))}
