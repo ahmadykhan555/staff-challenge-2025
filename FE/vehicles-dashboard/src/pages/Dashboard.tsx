@@ -38,14 +38,13 @@ const Dashboard: React.FC<DashboardProps> = () => {
     initData();
   }, []);
 
-  // pagination control
+  // When pageNumber changes, update displayed vehicles
   useEffect(() => {
     if (vehicles.length > 0) {
       setProductForSelectedPage(vehicles, pageNumber);
     }
   }, [pageNumber, vehicles]);
 
-  // Effect to sanitize and sync the page number in URL query
   useEffect(() => {
     if (vehicles.length === 0) return;
     const rawPage = parseInt(searchParams.get('page') || '1', 10);
@@ -53,12 +52,16 @@ const Dashboard: React.FC<DashboardProps> = () => {
     let sanitizedPage = isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
     if (sanitizedPage > totalPages) sanitizedPage = totalPages;
 
+    // Keeping URL clean
     if (rawPage !== sanitizedPage) {
       setSearchParams({ page: sanitizedPage.toString() }, { replace: true });
-    } else {
+      return;
+    }
+    // Sync with local state
+    if (sanitizedPage !== pageNumber) {
       setPageNumber(sanitizedPage);
     }
-  }, [isLoading, vehicles.length, searchParams, setSearchParams]);
+  }, [searchParams, vehicles.length, totalPages, pageNumber]);
 
   const initData = async () => {
     setIsLoading(true);
@@ -85,10 +88,12 @@ const Dashboard: React.FC<DashboardProps> = () => {
     }
   };
 
+  // Pagination button handler — only update URL param, not pageNumber directly
   const handlePageSelect = (direction: 'next' | 'prev') => {
+    const currentPage = parseInt(searchParams.get('page') || '1', 10);
     const newPage =
-      direction === 'next' ? Math.min(pageNumber + 1, totalPages) : Math.max(pageNumber - 1, 1);
-    setPageNumber(newPage);
+      direction === 'next' ? Math.min(currentPage + 1, totalPages) : Math.max(currentPage - 1, 1);
+
     setSearchParams({ page: newPage.toString() });
   };
 
