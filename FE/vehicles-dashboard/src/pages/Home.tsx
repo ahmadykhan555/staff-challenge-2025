@@ -19,7 +19,7 @@ const HomePage: React.FC<HomeProps> = () => {
         <Button
           variant="secondary"
           className="px-4 py-2"
-          onClick={() => navigate(ROUTES.dashboard)}
+          onClick={() => navigate(ROUTES.dashboard.path)}
         >
           Lets explore
         </Button>

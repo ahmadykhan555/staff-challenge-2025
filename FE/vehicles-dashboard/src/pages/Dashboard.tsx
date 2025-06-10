@@ -42,10 +42,11 @@ const Dashboard: React.FC<DashboardProps> = () => {
   const initData = async () => {
     setIsLoading(true);
     const allVehicles = await fetchVehicles();
-    const pageNumberFromQuery = parseInt(searchParams.get('page') || '1') - 1;
+    const pageNumberFromQuery = parseInt(searchParams.get('page') || '1');
+    setPageNumber(pageNumberFromQuery);
     const vehiclesForFirstPage = allVehicles.slice(
-      pageNumberFromQuery * PAGE_SIZE,
-      pageNumberFromQuery * PAGE_SIZE + PAGE_SIZE
+      (pageNumberFromQuery - 1) * PAGE_SIZE,
+      (pageNumberFromQuery - 1) * PAGE_SIZE + PAGE_SIZE
     );
     dispatch(setVehiclesList(allVehicles));
     setVehiclesForCurrentPage(vehiclesForFirstPage);
@@ -117,8 +118,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
               <AppTable
                 activeRowId={selectedVehicle?.licencePlate}
                 onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
-                onNextClicked={() => handlePageSelect('next')}
-                onPrevClicked={() => handlePageSelect('prev')}
+                onNavigationClicked={(direction: 'next' | 'prev') => handlePageSelect(direction)}
                 currentPage={pageNumber}
                 headerRow={<TableHeaderRow />}
                 tableDataNode={vehiclesForCurrentPage.map((entry) => {

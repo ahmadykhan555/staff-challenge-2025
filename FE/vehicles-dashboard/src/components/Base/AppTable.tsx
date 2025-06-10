@@ -7,9 +7,8 @@ const Table: React.FC<{
   headerRow?: ReactNode;
   tableDataNode?: ReactNode;
   onRowClicked: (id: string) => void;
-  onNextClicked: () => void;
-  onPrevClicked: () => void;
-}> = ({ currentPage = 1, headerRow, tableDataNode, onNextClicked, onPrevClicked }) => {
+  onNavigationClicked: (direction: 'next' | 'prev') => void;
+}> = ({ currentPage = 1, headerRow, tableDataNode, onNavigationClicked }) => {
   return (
     <>
       <table className="w-full ">
@@ -17,11 +16,11 @@ const Table: React.FC<{
         <tbody>{tableDataNode}</tbody>
       </table>
       <div className="flex items-center space-x-6 border-x border mx-auto w-[300px] sticky bottom-0 bg-white z-10 shadow-md">
-        <button className="px-4 py-2 border-r flex-1 " onClick={onPrevClicked}>
+        <button className="px-4 py-2 border-r flex-1 " onClick={() => onNavigationClicked('prev')}>
           Prev
         </button>
         <p className="border border-transparent"> {currentPage}</p>
-        <button className="px-4 py-2 border-l flex-1" onClick={onNextClicked}>
+        <button className="px-4 py-2 border-l flex-1" onClick={() => onNavigationClicked('next')}>
           Next
         </button>
       </div>

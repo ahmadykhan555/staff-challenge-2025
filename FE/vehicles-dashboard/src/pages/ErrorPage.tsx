@@ -14,7 +14,7 @@ export default () => {
         <Button
           variant="secondary"
           className="py-2 px-4 !bg-white"
-          onClick={() => navigate(ROUTES.home)}
+          onClick={() => navigate(ROUTES.home.path)}
         >
           Home
         </Button>

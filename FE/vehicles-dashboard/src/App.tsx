@@ -11,8 +11,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<DefaultLayout />}>
-          <Route path={ROUTES.home} caseSensitive index element={<Home />} />
-          <Route path={ROUTES.dashboard} index element={<Dashboard />} />
+          <Route path={ROUTES.home.path} caseSensitive index element={<Home />} />
+          <Route path={ROUTES.dashboard.path} index element={<Dashboard />} />
 
           <Route path="*" element={<ErrorPage />} />
         </Route>

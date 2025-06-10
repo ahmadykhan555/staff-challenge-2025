@@ -7,7 +7,7 @@ export const getVehicleConditionString = ({
   condition: VehicleCondition;
   fuel?: number;
 }) => {
-  return `${condition} ${getFuelString(fuel)}`;
+  return `${condition?.toLowerCase()} ${getFuelString(fuel)}`;
 };
 
 const getFuelString = (fuel?: number) => {
@@ -15,14 +15,14 @@ const getFuelString = (fuel?: number) => {
     return '';
   }
   if (fuel > 80) {
-    return 'Full';
+    return 'full';
   }
 
   if (fuel < 50) {
-    return 'Low';
+    return 'low';
   }
 
-  return 'Normal';
+  return 'normal';
 };
 
 export const transformVehicleToTableRow = ({
