@@ -6,7 +6,7 @@ import AppButton from '../components/Base/AppButton';
 
 type HomeProps = {};
 const HomePage: React.FC<HomeProps> = () => {
-  useDocumentTitle('Now!');
+  useDocumentTitle('Home');
 
   return (
     <section className="md:h-1/2 flex">

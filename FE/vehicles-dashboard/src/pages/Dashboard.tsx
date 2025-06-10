@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Skeleton } from '@freenow/wave';
 import AppTable from '../components/Base/AppTable';
 import AppMap from '../components/AppMap';
 import { fetchVehicles } from '../services/api';
@@ -15,30 +14,30 @@ import { transformVehicleToTableRow } from '../utils';
 import { useSearchParams } from 'react-router-dom';
 import TableHeaderRow from '../components/Dashboard/TableHeaderRow';
 import TableDataRow from '../components/Dashboard/TableDataRow';
+import DashboardLoadingState from '../components/Dashboard/LoadingState';
 
 type DashboardProps = {};
 const Dashboard: React.FC<DashboardProps> = () => {
-  useDocumentTitle('Now! Dashboard');
+  useDocumentTitle('Vehicles Dashboard');
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [vehiclesForCurrentPage, setVehiclesForCurrentPage] = useState<Vehicle[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [mapBounds, setMapBounds] = useState<LatLngBoundsExpression>();
-  const vehicles = useAppSelector((state) => state.vehiclesSlice.list);
+  const vehicles = useAppSelector((state) => state.vehiclesReducer.list);
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const selectedVehicle = useAppSelector((state) => state.vehiclesSlice.selectedVehicle);
+  const selectedVehicle = useAppSelector((state) => state.vehiclesReducer.selectedVehicle);
   const dispatch = useAppDispatch();
 
   const totalPages = useMemo(() => {
     return Math.max(1, Math.ceil(vehicles.length / PAGE_SIZE));
   }, [vehicles.length]);
 
+  // effects
   useEffect(() => {
     initData();
   }, []);
 
-  // When pageNumber changes, update displayed vehicles
   useEffect(() => {
     if (vehicles.length > 0) {
       setProductForSelectedPage(vehicles, pageNumber);
@@ -50,7 +49,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
       return;
     }
     const rawPage = parseInt(searchParams.get('page') || '1', 10);
-
     let sanitizedPage = isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
     if (sanitizedPage > totalPages) {
       sanitizedPage = totalPages;
@@ -67,14 +65,12 @@ const Dashboard: React.FC<DashboardProps> = () => {
     }
   }, [searchParams, vehicles.length, totalPages, pageNumber]);
 
+  // helpers
   const initData = async () => {
     setIsLoading(true);
     const allVehicles = await fetchVehicles();
-
     setProductForSelectedPage(allVehicles, pageNumber);
-
     dispatch(setVehiclesList(allVehicles));
-
     setIsLoading(false);
   };
 
@@ -115,10 +111,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
     <>
       <section className={`bg-white h-full flex flex-col gap-4 md:gap-y-8  `}>
         {isLoading ? (
-          <>
-            <Skeleton animated className="border !bg-slate-50 !w-full md:!h-2/5" />
-            <Skeleton animated className="border !bg-slate-50 w-full flex-1" />
-          </>
+          <DashboardLoadingState />
         ) : (
           <>
             <div className={`max-md:h-1/2 md:!h-1/3  w-full xl:container md:mx-auto`}>

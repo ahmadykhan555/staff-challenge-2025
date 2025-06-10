@@ -1,10 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Vehicle } from '../types/vehicle';
-
-type VehiclesState = {
-  list: Vehicle[];
-  selectedVehicle: Vehicle | null;
-};
+import type { VehiclesState, Vehicle } from '../types/vehicle';
 
 const initialState: VehiclesState = {
   list: [],

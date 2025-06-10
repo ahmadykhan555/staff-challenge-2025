@@ -1,5 +1,6 @@
 import React from 'react';
 import type { PaginationDirection } from '../../types/pagination';
+import { ChevronRightIcon, ChevronLeftIcon } from '@freenow/wave';
 
 type Props = {
   onPaginationClicked: (direction: PaginationDirection) => void;
@@ -38,11 +39,11 @@ const AppPagination: React.FC<Props> = ({
   return (
     <div className="flex items-center border-x border mx-auto w-[300px] sticky bottom-0 bg-white z-10 shadow-md">
       <button
-        className="px-4 py-2 border-r flex-1 disabled:opacity-50"
+        className="p-2 border-r flex-1 disabled:opacity-50 flex justify-center"
         onClick={() => onPaginationClicked('prev')}
         disabled={activePage <= 1}
       >
-        Prev
+        <ChevronLeftIcon />
       </button>
 
       {pageItems.map((item, idx) => (
@@ -52,11 +53,11 @@ const AppPagination: React.FC<Props> = ({
       ))}
 
       <button
-        className="px-4 py-2 border-l flex-1 disabled:opacity-50"
+        className="p-2 border-l flex-1 disabled:opacity-50 flex justify-center"
         onClick={() => onPaginationClicked('next')}
         disabled={totalPages !== undefined && activePage >= totalPages}
       >
-        Next
+        <ChevronRightIcon />
       </button>
     </div>
   );
