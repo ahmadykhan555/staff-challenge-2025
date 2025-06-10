@@ -145,7 +145,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                   const mappedData = transformVehicleToTableRow(entry);
                   return (
                     <TableDataRow
-                      entry={mappedData}
+                      vehicle={mappedData}
                       activeRowId={selectedVehicle?.licencePlate}
                       onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
                     />
