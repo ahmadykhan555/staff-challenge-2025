@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { MapState } from '../types';
-import { LatLngExpression } from 'leaflet';
+import type { MapState } from '../types';
+import type { LatLngExpression } from 'leaflet';
 
 const initialState: MapState = {
   bounds: undefined,

@@ -1,1 +1,1 @@
-// export from here
+export * from './vehicle';

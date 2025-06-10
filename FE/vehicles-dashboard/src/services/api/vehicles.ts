@@ -12,24 +12,24 @@ export const fetchShareNowVehicles = (): Promise<Vehicle[]> => {
         const result: { placemarks: ShareNowVehicle[] } = await response.json();
         const correctedResult: ShareNowVehicle[] = result.placemarks.map(
           ({
-            address = 'NA',
-            condition = 'NA',
-            engineType = 'NA',
-            fuel = 'NA',
-            id,
+            address = '-',
+            condition = '-',
             licencePlate,
-            state = 'NA',
+            state = '-',
+            engineType = '-',
+            fuel = undefined,
+            id,
             coordinates,
           }) => ({
             address,
             condition,
-            engineType,
-            fuel,
-            id,
             licencePlate,
             state,
-            coordinates: [coordinates[1], coordinates[0], coordinates[2]],
+            engineType,
             carType: 'share now',
+            fuel,
+            id,
+            coordinates: [coordinates[1], coordinates[0], coordinates[2]],
           })
         );
         resolve(orderBy(correctedResult, 'licencePlate', 'asc'));
@@ -48,24 +48,24 @@ export const fetchFreeNowVehicles = (): Promise<Vehicle[]> => {
         const result: { poiList: FreeNowVehicle[] } = await response.json();
         const correctedResult: Vehicle[] = result.poiList.map(
           ({
-            address = 'NA',
-            condition = 'NA',
-            engineType = 'NA',
-            fuel = 'NA',
+            address = '-',
+            condition = '-',
+            engineType = '-',
+            fuel = undefined,
             id,
             licencePlate,
-            state = 'NA',
+            state = '-',
             coordinate,
           }) => ({
             address,
             condition,
-            engineType,
-            fuel,
             id,
             licencePlate,
             state,
             coordinates: [coordinate?.latitude || 0, coordinate?.longitude || 0],
             carType: 'free now',
+            engineType,
+            fuel,
           })
         );
 
