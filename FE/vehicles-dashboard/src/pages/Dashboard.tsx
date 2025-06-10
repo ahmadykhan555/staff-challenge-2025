@@ -46,11 +46,15 @@ const Dashboard: React.FC<DashboardProps> = () => {
   }, [pageNumber, vehicles]);
 
   useEffect(() => {
-    if (vehicles.length === 0) return;
+    if (vehicles.length === 0) {
+      return;
+    }
     const rawPage = parseInt(searchParams.get('page') || '1', 10);
 
     let sanitizedPage = isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
-    if (sanitizedPage > totalPages) sanitizedPage = totalPages;
+    if (sanitizedPage > totalPages) {
+      sanitizedPage = totalPages;
+    }
 
     // Keeping URL clean
     if (rawPage !== sanitizedPage) {
@@ -101,8 +105,10 @@ const Dashboard: React.FC<DashboardProps> = () => {
     const startIdx = (pageNumber - 1) * PAGE_SIZE;
     const currentVehicles = vehicles.slice(startIdx, startIdx + PAGE_SIZE);
 
-    if (currentVehicles) setVehiclesForCurrentPage(currentVehicles);
-    setMapBounds(L.latLngBounds(currentVehicles.map((v) => v.coordinates)));
+    if (currentVehicles) {
+      setVehiclesForCurrentPage(currentVehicles);
+      setMapBounds(L.latLngBounds(currentVehicles.map((v) => v.coordinates)));
+    }
   };
 
   return (
@@ -115,7 +121,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
           </>
         ) : (
           <>
-            <div className={`max-md:h-1/2 md:!h-2/5  w-full xl:container md:mx-auto`}>
+            <div className={`max-md:h-1/2 md:!h-1/3  w-full xl:container md:mx-auto`}>
               <AppMap
                 center={selectedVehicle?.coordinates}
                 markers={vehiclesForCurrentPage.map((vehicle) => ({

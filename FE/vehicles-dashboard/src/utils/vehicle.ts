@@ -1,28 +1,18 @@
 import type { TableVehicle, Vehicle, VehicleCondition } from '../types';
 
-export const getVehicleConditionString = ({
-  condition,
-  fuel,
-}: {
-  condition: VehicleCondition;
-  fuel?: number;
-}) => {
-  return `${condition?.toLowerCase()} ${getFuelString(fuel)}`;
-};
-
-const getFuelString = (fuel?: number) => {
+export const getFuelString = (fuel?: number) => {
   if (!fuel && fuel !== 0) {
     return '';
   }
   if (fuel > 80) {
-    return 'full';
+    return 'full fuel';
   }
 
   if (fuel < 50) {
-    return 'low';
+    return 'low fuel';
   }
 
-  return 'normal';
+  return 'normal fuel';
 };
 
 export const transformVehicleToTableRow = ({
@@ -40,6 +30,6 @@ export const transformVehicleToTableRow = ({
     coordinates: (coordinates as number[]).join(', '),
     address,
     state,
-    condition: getVehicleConditionString({ condition, fuel }),
+    conditionAndFuel: { condition, fuel },
   };
 };

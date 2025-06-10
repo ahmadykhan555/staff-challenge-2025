@@ -5,7 +5,7 @@ const TableHeaderRow: React.FC<{}> = () => {
     <tr className="sticky -top-1 bg-white z-10 shadow-sm">
       {DEFAULT_VEHICLE_LISTING_COLUMNS.map(({ displayName, id }) => (
         <th
-          className="cursor-pointer border-l text-sm  p-4"
+          className="cursor-pointer border-l text-sm  p-3"
           key={id}
           // onClick={id === sortById ? toggleSortDirection : undefined}
         >

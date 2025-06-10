@@ -37,5 +37,8 @@ export type FreeNowVehicle = Vehicle & {
 export type CarType = 'free now' | 'share now';
 
 export type TableVehicle = Omit<Vehicle, 'id' | 'engineType' | 'fuel' | 'condition'> & {
-  condition: string;
+  conditionAndFuel: {
+    condition: VehicleCondition;
+    fuel: number;
+  };
 };

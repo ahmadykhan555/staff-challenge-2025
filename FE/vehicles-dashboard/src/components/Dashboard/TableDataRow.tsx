@@ -1,6 +1,7 @@
-import ShareNowCarIcon from '../../assets/icons/map/share-now-car.svg';
-import FreeNowCarIcon from '../../assets/icons/map/free-now-car.svg';
-import type { CarType, TableVehicle } from '../../types';
+import type { TableVehicle } from '../../types';
+import AppBadge from '../Base/AppBadge';
+import VehicleIcon from './VehicleIcon';
+import VehicleCondition from './VehicleCondition';
 
 const TableDataRow: React.FC<{
   entry: TableVehicle;
@@ -32,27 +33,21 @@ const TableDataRow: React.FC<{
     >
       {Object.keys(entry).map((key, idx) => (
         <td
-          className="px-2 py-4 max-xl:!max-w-[200px] text-center text-sm whitespace-nowrap overflow-hidden text-ellipsis capitalize"
+          className="p-3 max-xl:!max-w-[200px] text-center text-sm whitespace-nowrap overflow-hidden text-ellipsis capitalize"
           key={idx}
         >
           {key === 'carType' ? (
-            (entry[key] as CarType) == 'free now' ? (
-              <img className="size-10 mx-auto" src={FreeNowCarIcon} />
-            ) : (
-              <img className="size-10 mx-auto" src={ShareNowCarIcon} />
-            )
+            <VehicleIcon type={entry[key]} />
           ) : key === 'state' ? (
-            <div
-              className={`text-xs border capitalize rounded px-2 py-1 ${entry[key]?.toLowerCase() === 'active' ? 'border-green-600 text-green-600' : 'border-orange-600 text-orange-600'}`}
-            >
-              {entry[key]?.toLowerCase()}
-            </div>
-          ) : key === 'condition' ? (
-            <div
-              className={`text-xs border capitalize rounded px-2 py-1 ${entry[key]?.toLowerCase() === 'active' ? 'border-green-600 text-green-600' : 'border-orange-600 text-orange-600'}`}
-            >
-              {entry[key]?.toLowerCase()}
-            </div>
+            <AppBadge
+              type={entry[key]?.toLowerCase() === 'active' ? 'success' : 'danger'}
+              text={entry[key]?.toLowerCase()}
+            />
+          ) : key === 'conditionAndFuel' ? (
+            <VehicleCondition
+              condition={entry.conditionAndFuel?.condition}
+              fuel={entry.conditionAndFuel?.fuel}
+            />
           ) : (
             entry[key]
           )}
