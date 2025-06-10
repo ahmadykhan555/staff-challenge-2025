@@ -30,7 +30,7 @@ const TableDataRow: React.FC<{
         );
       }
       default:
-        return <>{(vehicle as any)[key]}</>; // fix type
+        return <>{vehicle[key]}</>;
     }
   };
 

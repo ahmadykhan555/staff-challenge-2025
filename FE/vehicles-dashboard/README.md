@@ -33,3 +33,11 @@ The decision was between file based routing with Next.Js or routing with React R
 ### State Management
 
 The decision here was between React-Redux (with toolkit) vs Zustand. Though Zustand is a great light-weight option for this coding challenge, redux is a much better choice for enterprise solutions with complex states and big teams. To keep this application future-proof I chose react-redux with toolkit for `Stability` and `Structure` which is essential for an enterprise application.
+
+### Map Choice
+
+Leaflet is used for Map, the reason for this was cost effectiveness. Since the dashboard doesn't need a lot of fancy features, using a map like Google Maps would be expensive for the business. Leaflet supports features like markers, zoom controls, auto panning, bounds setting, route highlighting etc which are common for such dashboards. There is a react-leaflet npm packages that I have opted for. Its very well maintained, lightweight and provides good developer experience.
+
+### Component Markup
+
+I have opted for a mix of components created from scratch and components coming from Wave to keep the application flexible for either option. Since Wave supports tree-shaking this wouldn't hurt the build size
