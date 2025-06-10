@@ -36,21 +36,37 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
   // pagination control
   useEffect(() => {
-    setProductForSelectedPage();
-  }, [pageNumber]);
+    if (vehicles.length > 0) {
+      setProductForSelectedPage(vehicles, pageNumber);
+    }
+  }, [pageNumber, vehicles]);
+
+  // Effect to sanitize and sync the page number in URL query
+  useEffect(() => {
+    const totalPages = Math.ceil(vehicles.length / PAGE_SIZE) || 1;
+    const rawPage = parseInt(searchParams.get('page') || '1', 10);
+    const sanitizedPage = isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
+
+    console.log(totalPages);
+
+    // If page is invalid in URL, update URL with sanitized page number (replace so no history entry)
+    if (isNaN(rawPage) || rawPage < 1) {
+      setSearchParams({ page: '1' }, { replace: true });
+    } else if (rawPage > totalPages) {
+      setSearchParams({ page: totalPages.toString() }, { replace: true });
+    } else {
+      setPageNumber(sanitizedPage);
+    }
+  }, [searchParams, setSearchParams]);
 
   const initData = async () => {
     setIsLoading(true);
     const allVehicles = await fetchVehicles();
-    const pageNumberFromQuery = parseInt(searchParams.get('page') || '1');
-    setPageNumber(pageNumberFromQuery);
-    const vehiclesForFirstPage = allVehicles.slice(
-      (pageNumberFromQuery - 1) * PAGE_SIZE,
-      (pageNumberFromQuery - 1) * PAGE_SIZE + PAGE_SIZE
-    );
+
+    setProductForSelectedPage(allVehicles, pageNumber);
+
     dispatch(setVehiclesList(allVehicles));
-    setVehiclesForCurrentPage(vehiclesForFirstPage);
-    setMapBounds(L.latLngBounds(vehiclesForFirstPage.map((v) => v.coordinates)));
+
     setIsLoading(false);
   };
 
@@ -69,26 +85,17 @@ const Dashboard: React.FC<DashboardProps> = () => {
   };
 
   const handlePageSelect = (direction: 'next' | 'prev') => {
-    const newPage = direction === 'next' ? pageNumber + 1 : pageNumber - 1;
-    setPageNumber(newPage <= 0 ? 1 : newPage);
+    const newPage = direction === 'next' ? pageNumber + 1 : Math.max(pageNumber - 1, 1);
+    setPageNumber(newPage);
     setSearchParams({ page: newPage.toString() });
   };
 
-  const setProductForSelectedPage = () => {
-    let vehicleSlice: Vehicle[] = [];
+  const setProductForSelectedPage = (vehicles: Vehicle[], pageNumber: number) => {
+    const startIdx = (pageNumber - 1) * PAGE_SIZE;
+    const currentVehicles = vehicles.slice(startIdx, startIdx + PAGE_SIZE);
 
-    if (pageNumber === 1 || pageNumber <= 0) {
-      vehicleSlice = vehicles.slice(0, PAGE_SIZE);
-      setVehiclesForCurrentPage(vehicleSlice);
-    } else {
-      vehicleSlice = vehicles.slice(
-        (pageNumber - 1) * PAGE_SIZE,
-        (pageNumber - 1) * PAGE_SIZE + PAGE_SIZE
-      );
-
-      setVehiclesForCurrentPage(vehicleSlice);
-    }
-    setMapBounds(L.latLngBounds(vehicleSlice.map((v) => v.coordinates)));
+    if (currentVehicles) setVehiclesForCurrentPage(currentVehicles);
+    setMapBounds(L.latLngBounds(currentVehicles.map((v) => v.coordinates)));
   };
 
   return (
