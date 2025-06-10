@@ -138,9 +138,10 @@ const Dashboard: React.FC<DashboardProps> = () => {
               <AppTable
                 activeRowId={selectedVehicle?.licencePlate}
                 onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
-                onNavigationClicked={(direction: 'next' | 'prev') => handlePageSelect(direction)}
-                currentPage={pageNumber}
+                onPaginationClicked={(direction: 'next' | 'prev') => handlePageSelect(direction)}
+                activePage={pageNumber}
                 headerRow={<TableHeaderRow />}
+                totalPages={totalPages}
                 tableDataNode={vehiclesForCurrentPage.map((entry) => {
                   const mappedData = transformVehicleToTableRow(entry);
                   return (
