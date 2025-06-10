@@ -1,13 +1,19 @@
 import React from 'react';
 
-const AppBadge: React.FC<{
-  type: 'success' | 'danger' | 'warning';
+type BadgeTypes = 'success' | 'danger' | 'warning';
+type BadgeProps = {
+  type: BadgeTypes;
   text: string;
-}> = ({ type, text }) => {
+};
+const AppBadge: React.FC<BadgeProps> = ({ type, text }) => {
+  const classesForBadge: Record<BadgeTypes, string> = {
+    success: 'border-green-600 text-green-600',
+    danger: 'border-free-now-red text-free-now-red',
+    warning: 'border-orange-600 text-orange-600',
+  };
+
   return (
-    <div
-      className={`text-xs border capitalize rounded px-2 py-1 ${type === 'success' ? 'border-green-600 text-green-600' : type === 'danger' ? 'border-orange-600 text-orange-600' : ''}`}
-    >
+    <div className={`text-xs border capitalize rounded px-2 py-1 ${classesForBadge[type]}`}>
       {text}
     </div>
   );

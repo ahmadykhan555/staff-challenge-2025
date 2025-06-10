@@ -127,7 +127,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
               />
             </div>
 
-            <div className="flex-1 max-h-screen !rounded-md overflow-auto xl:container w-full mx-auto">
+            <div className="flex-1 max-h-screen overflow-auto xl:container w-full mx-auto">
               <AppTable
                 activeRowId={selectedVehicle?.licencePlate}
                 onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}

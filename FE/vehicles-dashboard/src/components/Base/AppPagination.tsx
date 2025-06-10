@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type { PaginationDirection } from '../../types/pagination';
 import { ChevronRightIcon, ChevronLeftIcon } from '@freenow/wave';
 
@@ -13,6 +13,12 @@ const AppPagination: React.FC<Props> = ({
   totalPages = activePage + 2,
   onPaginationClicked,
 }) => {
+  const [pagesToShow, setPagesToShow] = useState<(string | number)[]>([]);
+
+  useEffect(() => {
+    setPagesToShow(getPageItems());
+  }, [activePage]);
+
   const getPageItems = () => {
     const pages: (number | string)[] = [];
 
@@ -34,10 +40,8 @@ const AppPagination: React.FC<Props> = ({
     return pages;
   };
 
-  const pageItems = getPageItems();
-
   return (
-    <div className="flex items-center border-x border mx-auto w-[300px] sticky bottom-0 bg-white z-10 shadow-md">
+    <div className="flex items-center border-x border  rounded-md mx-auto w-[300px] sticky bottom-2 bg-white z-10 shadow-md">
       <button
         className="p-2 border-r flex-1 disabled:opacity-50 flex justify-center"
         onClick={() => onPaginationClicked('prev')}
@@ -46,7 +50,7 @@ const AppPagination: React.FC<Props> = ({
         <ChevronLeftIcon />
       </button>
 
-      {pageItems.map((item, idx) => (
+      {pagesToShow.map((item, idx) => (
         <span key={idx} className="border flex-1 border-transparent text-center">
           {item}
         </span>
