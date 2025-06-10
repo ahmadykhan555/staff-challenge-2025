@@ -1,4 +1,4 @@
-import type { TableVehicle, Vehicle, VehicleCondition } from '../types';
+import type { TableVehicle, Vehicle } from '../types';
 
 export const getFuelString = (fuel?: number) => {
   if (!fuel && fuel !== 0) {
@@ -30,6 +30,6 @@ export const transformVehicleToTableRow = ({
     coordinates: (coordinates as number[]).join(', '),
     address,
     state,
-    conditionAndFuel: { condition, fuel },
+    conditionAndFuel: { condition, fuel: fuel || -1 },
   };
 };
