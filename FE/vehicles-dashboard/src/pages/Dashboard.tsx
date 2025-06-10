@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Skeleton } from '@freenow/wave';
 import AppTable from '../components/Base/AppTable';
 import AppMap from '../components/AppMap';
@@ -30,6 +30,10 @@ const Dashboard: React.FC<DashboardProps> = () => {
   const selectedVehicle = useAppSelector((state) => state.vehiclesSlice.selectedVehicle);
   const dispatch = useAppDispatch();
 
+  const totalPages = useMemo(() => {
+    return Math.max(1, Math.ceil(vehicles.length / PAGE_SIZE));
+  }, [vehicles.length]);
+
   useEffect(() => {
     initData();
   }, []);
@@ -43,21 +47,18 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
   // Effect to sanitize and sync the page number in URL query
   useEffect(() => {
-    const totalPages = Math.ceil(vehicles.length / PAGE_SIZE) || 1;
+    if (vehicles.length === 0) return;
     const rawPage = parseInt(searchParams.get('page') || '1', 10);
-    const sanitizedPage = isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
 
-    console.log(totalPages);
+    let sanitizedPage = isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
+    if (sanitizedPage > totalPages) sanitizedPage = totalPages;
 
-    // If page is invalid in URL, update URL with sanitized page number (replace so no history entry)
-    if (isNaN(rawPage) || rawPage < 1) {
-      setSearchParams({ page: '1' }, { replace: true });
-    } else if (rawPage > totalPages) {
-      setSearchParams({ page: totalPages.toString() }, { replace: true });
+    if (rawPage !== sanitizedPage) {
+      setSearchParams({ page: sanitizedPage.toString() }, { replace: true });
     } else {
       setPageNumber(sanitizedPage);
     }
-  }, [searchParams, setSearchParams]);
+  }, [isLoading, vehicles.length, searchParams, setSearchParams]);
 
   const initData = async () => {
     setIsLoading(true);
@@ -85,7 +86,8 @@ const Dashboard: React.FC<DashboardProps> = () => {
   };
 
   const handlePageSelect = (direction: 'next' | 'prev') => {
-    const newPage = direction === 'next' ? pageNumber + 1 : Math.max(pageNumber - 1, 1);
+    const newPage =
+      direction === 'next' ? Math.min(pageNumber + 1, totalPages) : Math.max(pageNumber - 1, 1);
     setPageNumber(newPage);
     setSearchParams({ page: newPage.toString() });
   };
