@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Skeleton } from '@freenow/wave';
 import AppTable from '../components/Base/AppTable';
 import AppMap from '../components/AppMap';
@@ -30,27 +30,51 @@ const Dashboard: React.FC<DashboardProps> = () => {
   const selectedVehicle = useAppSelector((state) => state.vehiclesSlice.selectedVehicle);
   const dispatch = useAppDispatch();
 
+  const totalPages = useMemo(() => {
+    return Math.max(1, Math.ceil(vehicles.length / PAGE_SIZE));
+  }, [vehicles.length]);
+
   useEffect(() => {
     initData();
   }, []);
 
-  // pagination control
+  // When pageNumber changes, update displayed vehicles
   useEffect(() => {
-    setProductForSelectedPage();
-  }, [pageNumber]);
+    if (vehicles.length > 0) {
+      setProductForSelectedPage(vehicles, pageNumber);
+    }
+  }, [pageNumber, vehicles]);
+
+  useEffect(() => {
+    if (vehicles.length === 0) {
+      return;
+    }
+    const rawPage = parseInt(searchParams.get('page') || '1', 10);
+
+    let sanitizedPage = isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
+    if (sanitizedPage > totalPages) {
+      sanitizedPage = totalPages;
+    }
+
+    // Keeping URL clean
+    if (rawPage !== sanitizedPage) {
+      setSearchParams({ page: sanitizedPage.toString() }, { replace: true });
+      return;
+    }
+    // Sync with local state
+    if (sanitizedPage !== pageNumber) {
+      setPageNumber(sanitizedPage);
+    }
+  }, [searchParams, vehicles.length, totalPages, pageNumber]);
 
   const initData = async () => {
     setIsLoading(true);
     const allVehicles = await fetchVehicles();
-    const pageNumberFromQuery = parseInt(searchParams.get('page') || '1');
-    setPageNumber(pageNumberFromQuery);
-    const vehiclesForFirstPage = allVehicles.slice(
-      (pageNumberFromQuery - 1) * PAGE_SIZE,
-      (pageNumberFromQuery - 1) * PAGE_SIZE + PAGE_SIZE
-    );
+
+    setProductForSelectedPage(allVehicles, pageNumber);
+
     dispatch(setVehiclesList(allVehicles));
-    setVehiclesForCurrentPage(vehiclesForFirstPage);
-    setMapBounds(L.latLngBounds(vehiclesForFirstPage.map((v) => v.coordinates)));
+
     setIsLoading(false);
   };
 
@@ -68,27 +92,23 @@ const Dashboard: React.FC<DashboardProps> = () => {
     }
   };
 
+  // Pagination button handler — only update URL param, not pageNumber directly
   const handlePageSelect = (direction: 'next' | 'prev') => {
-    const newPage = direction === 'next' ? pageNumber + 1 : pageNumber - 1;
-    setPageNumber(newPage <= 0 ? 1 : newPage);
+    const currentPage = parseInt(searchParams.get('page') || '1', 10);
+    const newPage =
+      direction === 'next' ? Math.min(currentPage + 1, totalPages) : Math.max(currentPage - 1, 1);
+
     setSearchParams({ page: newPage.toString() });
   };
 
-  const setProductForSelectedPage = () => {
-    let vehicleSlice: Vehicle[] = [];
+  const setProductForSelectedPage = (vehicles: Vehicle[], pageNumber: number) => {
+    const startIdx = (pageNumber - 1) * PAGE_SIZE;
+    const currentVehicles = vehicles.slice(startIdx, startIdx + PAGE_SIZE);
 
-    if (pageNumber === 1 || pageNumber <= 0) {
-      vehicleSlice = vehicles.slice(0, PAGE_SIZE);
-      setVehiclesForCurrentPage(vehicleSlice);
-    } else {
-      vehicleSlice = vehicles.slice(
-        (pageNumber - 1) * PAGE_SIZE,
-        (pageNumber - 1) * PAGE_SIZE + PAGE_SIZE
-      );
-
-      setVehiclesForCurrentPage(vehicleSlice);
+    if (currentVehicles) {
+      setVehiclesForCurrentPage(currentVehicles);
+      setMapBounds(L.latLngBounds(currentVehicles.map((v) => v.coordinates)));
     }
-    setMapBounds(L.latLngBounds(vehicleSlice.map((v) => v.coordinates)));
   };
 
   return (
@@ -101,13 +121,13 @@ const Dashboard: React.FC<DashboardProps> = () => {
           </>
         ) : (
           <>
-            <div className={`max-md:h-1/2 md:!h-2/5  w-full xl:container md:mx-auto`}>
+            <div className={`max-md:h-1/2 md:!h-1/3  w-full xl:container md:mx-auto`}>
               <AppMap
                 center={selectedVehicle?.coordinates}
                 markers={vehiclesForCurrentPage.map((vehicle) => ({
                   coordinates: vehicle.coordinates,
                   text: vehicle.licencePlate,
-                  type: vehicle.carType,
+                  type: vehicle.type,
                 }))}
                 bounds={mapBounds}
                 onMarkerClicked={(markerCoordinates) => handleSelectedMarker(markerCoordinates)}
@@ -118,14 +138,15 @@ const Dashboard: React.FC<DashboardProps> = () => {
               <AppTable
                 activeRowId={selectedVehicle?.licencePlate}
                 onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
-                onNavigationClicked={(direction: 'next' | 'prev') => handlePageSelect(direction)}
-                currentPage={pageNumber}
-                headerRow={<TableHeaderRow />}
-                tableDataNode={vehiclesForCurrentPage.map((entry) => {
+                onPaginationClicked={(direction: 'next' | 'prev') => handlePageSelect(direction)}
+                activePage={pageNumber}
+                headerRowComponent={<TableHeaderRow />}
+                totalPages={totalPages}
+                dataRowComponent={vehiclesForCurrentPage.map((entry) => {
                   const mappedData = transformVehicleToTableRow(entry);
                   return (
                     <TableDataRow
-                      entry={mappedData}
+                      vehicle={mappedData}
                       activeRowId={selectedVehicle?.licencePlate}
                       onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
                     />

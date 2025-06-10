@@ -10,7 +10,7 @@ const GLOBAL_MAP_CENTER: LatLngExpression = [53.5511, 9.9937];
 
 import type { LatLngBoundsExpression, LatLngExpression, PointExpression } from 'leaflet';
 import { useEffect } from 'react';
-import type { CarType } from '../types';
+import type { VehicleType } from '../types';
 
 const freeNowCarIcon = L.icon({
   iconUrl: FreeNowCarIcon, // or use import if bundling
@@ -29,7 +29,7 @@ const shareNowCarIcon = L.icon({
 type MapMarker = {
   coordinates: LatLngExpression;
   text?: string;
-  type: CarType;
+  type: VehicleType;
 };
 
 const AppMap: React.FC<{

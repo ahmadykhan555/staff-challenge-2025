@@ -1,31 +1,36 @@
 import type React from 'react';
 import { type ReactNode } from 'react';
+import AppPagination from './AppPagination';
+import type { PaginationDirection } from '../../types/pagination';
 
-const Table: React.FC<{
-  currentPage?: number;
+const AppTable: React.FC<{
+  activePage?: number;
   activeRowId?: string;
-  headerRow?: ReactNode;
-  tableDataNode?: ReactNode;
+  headerRowComponent?: ReactNode;
+  dataRowComponent?: ReactNode;
+  totalPages: number;
   onRowClicked: (id: string) => void;
-  onNavigationClicked: (direction: 'next' | 'prev') => void;
-}> = ({ currentPage = 1, headerRow, tableDataNode, onNavigationClicked }) => {
+  onPaginationClicked: (direction: PaginationDirection) => void;
+}> = ({
+  activePage = 1,
+  headerRowComponent,
+  dataRowComponent,
+  onPaginationClicked,
+  totalPages,
+}) => {
   return (
-    <>
+    <div className="relative">
       <table className="w-full ">
-        <thead className="font-bold uppercase text-center border-b">{headerRow}</thead>
-        <tbody>{tableDataNode}</tbody>
+        <thead className="font-bold uppercase text-center border-b">{headerRowComponent}</thead>
+        <tbody>{dataRowComponent}</tbody>
       </table>
-      <div className="flex items-center space-x-6 border-x border mx-auto w-[300px] sticky bottom-0 bg-white z-10 shadow-md">
-        <button className="px-4 py-2 border-r flex-1 " onClick={() => onNavigationClicked('prev')}>
-          Prev
-        </button>
-        <p className="border border-transparent"> {currentPage}</p>
-        <button className="px-4 py-2 border-l flex-1" onClick={() => onNavigationClicked('next')}>
-          Next
-        </button>
-      </div>
-    </>
+      <AppPagination
+        activePage={activePage}
+        totalPages={totalPages}
+        onPaginationClicked={(direction) => onPaginationClicked(direction)}
+      />
+    </div>
   );
 };
 
-export default Table;
+export default AppTable;

@@ -1,5 +1,5 @@
 export const DEFAULT_VEHICLE_LISTING_COLUMNS = [
-  { displayName: 'type', id: 'carType' },
+  { displayName: 'type', id: 'type' },
   { displayName: 'licencePlate', id: 'licencePlate', sortById: 'licencePlate' },
   { displayName: 'coordinates', id: 'coordinates' },
   { displayName: 'address', id: 'address' },
