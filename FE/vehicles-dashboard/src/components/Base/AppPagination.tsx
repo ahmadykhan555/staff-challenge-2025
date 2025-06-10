@@ -20,16 +20,13 @@ const AppPagination: React.FC<Props> = ({
   }, [activePage]);
 
   const getPageItems = () => {
-    const pages: (number | string)[] = [];
+    const pages: (number | string)[] = [activePage];
 
     if (activePage + 1 <= totalPages) {
       pages.push(activePage + 1);
     }
     if (activePage + 2 <= totalPages) {
       pages.push(activePage + 2);
-    }
-    if (activePage + 3 <= totalPages) {
-      pages.push(activePage + 3);
     }
 
     if (totalPages > activePage + 2) {
@@ -50,9 +47,12 @@ const AppPagination: React.FC<Props> = ({
         <ChevronLeftIcon />
       </button>
 
-      {pagesToShow.map((item, idx) => (
-        <span key={idx} className="border flex-1 border-transparent text-center">
-          {item}
+      {pagesToShow.map((pageNumber, idx) => (
+        <span
+          key={idx}
+          className={`border flex-1 border-transparent text-center  ${pageNumber === activePage ? 'font-bold' : ''}`}
+        >
+          {pageNumber}
         </span>
       ))}
 
