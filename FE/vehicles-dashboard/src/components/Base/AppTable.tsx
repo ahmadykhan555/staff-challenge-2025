@@ -7,14 +7,14 @@ const AppTable: React.FC<{
   activePage?: number;
   activeRowId?: string;
   headerRowComponent?: ReactNode;
-  dataRowComponent?: ReactNode;
+  dataRowsComponent?: ReactNode;
   totalPages: number;
   onRowClicked: (id: string) => void;
   onPaginationClicked: (direction: PaginationDirection) => void;
 }> = ({
   activePage = 1,
   headerRowComponent,
-  dataRowComponent,
+  dataRowsComponent,
   onPaginationClicked,
   totalPages,
 }) => {
@@ -22,7 +22,7 @@ const AppTable: React.FC<{
     <div className="max-h-full border overflow-auto">
       <table className="w-full max-h-full overflow-auto">
         <thead className="font-bold uppercase text-center border-b">{headerRowComponent}</thead>
-        <tbody>{dataRowComponent}</tbody>
+        <tbody>{dataRowsComponent}</tbody>
       </table>
       <AppPagination
         activePage={activePage}

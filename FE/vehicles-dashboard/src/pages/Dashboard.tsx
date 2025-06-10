@@ -12,9 +12,9 @@ import type { Vehicle } from '../types';
 import L from 'leaflet';
 import { transformVehicleToTableRow } from '../utils';
 import { useSearchParams } from 'react-router-dom';
-import TableHeaderRow from '../components/Dashboard/TableHeaderRow';
-import TableDataRow from '../components/Dashboard/TableDataRow';
+import VehiclesTableHeaderRow from '../components/Dashboard/VehiclesTableHeaderRow';
 import DashboardLoadingState from '../components/Dashboard/LoadingState';
+import VehicleInfoRow from '../components/Dashboard/VehicleInfoRow';
 
 type DashboardProps = {};
 const Dashboard: React.FC<DashboardProps> = () => {
@@ -133,12 +133,12 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
                 onPaginationClicked={(direction: 'next' | 'prev') => handlePageSelect(direction)}
                 activePage={pageNumber}
-                headerRowComponent={<TableHeaderRow />}
+                headerRowComponent={<VehiclesTableHeaderRow />}
                 totalPages={totalPages}
-                dataRowComponent={vehiclesForCurrentPage.map((entry) => {
+                dataRowsComponent={vehiclesForCurrentPage.map((entry) => {
                   const mappedData = transformVehicleToTableRow(entry);
                   return (
-                    <TableDataRow
+                    <VehicleInfoRow
                       vehicle={mappedData}
                       activeRowId={selectedVehicle?.licencePlate}
                       onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}

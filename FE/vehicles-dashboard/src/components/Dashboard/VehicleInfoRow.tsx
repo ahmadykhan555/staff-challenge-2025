@@ -1,9 +1,9 @@
 import type { TableVehicle } from '../../types';
 import AppBadge from '../Base/AppBadge';
-import VehicleIcon from './VehicleIcon';
+import VehicleIcon from '../Base/VehicleIcon';
 import VehicleCondition from './VehicleCondition';
 
-const TableDataRow: React.FC<{
+const VehicleInfoRow: React.FC<{
   vehicle: TableVehicle;
   activeRowId: any;
   onRowClicked: (licencePlate: string) => void;
@@ -54,4 +54,4 @@ const TableDataRow: React.FC<{
   );
 };
 
-export default TableDataRow;
+export default VehicleInfoRow;

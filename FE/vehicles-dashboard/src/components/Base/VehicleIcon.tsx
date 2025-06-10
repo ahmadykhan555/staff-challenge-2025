@@ -1,6 +1,6 @@
 import React from 'react';
 import type { VehicleType } from '../../types';
-import AppIcon from '../Base/AppIcon';
+import AppIcon from './AppIcon';
 
 const VehicleIcon: React.FC<{
   type: VehicleType;

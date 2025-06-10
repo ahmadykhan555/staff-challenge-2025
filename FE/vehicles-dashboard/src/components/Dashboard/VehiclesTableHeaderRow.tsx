@@ -1,14 +1,10 @@
 import { DEFAULT_VEHICLE_LISTING_COLUMNS } from '../../constants/dashboard';
 
-const TableHeaderRow: React.FC<{}> = () => {
+const VehiclesTableHeaderRow: React.FC<{}> = () => {
   return (
     <tr className="sticky -top-1 bg-white z-10 shadow-sm">
       {DEFAULT_VEHICLE_LISTING_COLUMNS.map(({ displayName, id }) => (
-        <th
-          className="cursor-pointer text-sm p-3"
-          key={id}
-          // onClick={id === sortById ? toggleSortDirection : undefined}
-        >
+        <th className="cursor-pointer text-sm p-3" key={id}>
           {displayName}
         </th>
       ))}
@@ -16,4 +12,4 @@ const TableHeaderRow: React.FC<{}> = () => {
   );
 };
 
-export default TableHeaderRow;
+export default VehiclesTableHeaderRow;
