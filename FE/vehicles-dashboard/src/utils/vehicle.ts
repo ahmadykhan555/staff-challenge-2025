@@ -17,7 +17,7 @@ export const getFuelString = (fuel?: number) => {
 
 export const transformVehicleToTableRow = ({
   address,
-  carType,
+  type,
   coordinates,
   licencePlate,
   state,
@@ -25,7 +25,7 @@ export const transformVehicleToTableRow = ({
   fuel,
 }: Vehicle): TableVehicle => {
   return {
-    carType,
+    type,
     licencePlate,
     coordinates: (coordinates as number[]).join(', '),
     address,

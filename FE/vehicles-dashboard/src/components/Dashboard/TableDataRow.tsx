@@ -10,8 +10,8 @@ const TableDataRow: React.FC<{
 }> = ({ vehicle, activeRowId, onRowClicked }) => {
   const renderComponentForProperty = (key: keyof TableVehicle) => {
     switch (key) {
-      case 'carType': {
-        return <VehicleIcon type={vehicle.carType} />;
+      case 'type': {
+        return <VehicleIcon type={vehicle.type} />;
       }
       case 'state': {
         return (

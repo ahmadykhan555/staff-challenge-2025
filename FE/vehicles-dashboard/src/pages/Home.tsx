@@ -3,6 +3,7 @@ import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import { Card, Headline, Button } from '@freenow/wave';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants';
+import AppButton from '../components/Base/AppButton';
 
 type HomeProps = {};
 const HomePage: React.FC<HomeProps> = () => {
@@ -16,13 +17,7 @@ const HomePage: React.FC<HomeProps> = () => {
         <Headline size={'xl'}>
           Welcome to <span className="text-red-600 uppercase font-normal">FreeNow</span> Dashboard
         </Headline>
-        <Button
-          variant="secondary"
-          className="px-4 py-2"
-          onClick={() => navigate(ROUTES.dashboard.path)}
-        >
-          Lets explore
-        </Button>
+        <AppButton text="Lets explore" to={ROUTES.dashboard.path} />
       </Card>
     </section>
   );

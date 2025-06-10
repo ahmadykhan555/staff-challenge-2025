@@ -127,7 +127,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 markers={vehiclesForCurrentPage.map((vehicle) => ({
                   coordinates: vehicle.coordinates,
                   text: vehicle.licencePlate,
-                  type: vehicle.carType,
+                  type: vehicle.type,
                 }))}
                 bounds={mapBounds}
                 onMarkerClicked={(markerCoordinates) => handleSelectedMarker(markerCoordinates)}

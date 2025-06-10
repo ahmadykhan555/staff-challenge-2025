@@ -26,7 +26,7 @@ export const fetchShareNowVehicles = (): Promise<Vehicle[]> => {
             licencePlate,
             state,
             engineType,
-            carType: 'share now',
+            type: 'share now',
             fuel,
             id,
             coordinates: [coordinates[1], coordinates[0], coordinates[2]],
@@ -63,7 +63,7 @@ export const fetchFreeNowVehicles = (): Promise<Vehicle[]> => {
             licencePlate,
             state,
             coordinates: [coordinate?.latitude || 0, coordinate?.longitude || 0],
-            carType: 'free now',
+            type: 'free now',
             engineType,
             fuel,
           })

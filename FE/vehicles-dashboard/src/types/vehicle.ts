@@ -19,7 +19,7 @@ export type Vehicle = {
   state: VehicleState;
   licencePlate: string;
   coordinates: LatLngExpression;
-  carType: CarType;
+  type: CarType;
 };
 
 export type ShareNowVehicle = Vehicle & {
