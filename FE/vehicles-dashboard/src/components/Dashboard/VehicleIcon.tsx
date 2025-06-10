@@ -8,7 +8,13 @@ const VehicleIcon: React.FC<{
   type: VehicleType;
 }> = ({ type }) => {
   return (
-    <img className="size-10 mx-auto" src={type === 'free now' ? FreeNowCarIcon : ShareNowCarIcon} />
+    <>
+      <img
+        className="size-10 mx-auto"
+        src={type === 'free now' ? FreeNowCarIcon : ShareNowCarIcon}
+      />
+      <p className="text-2xs -mt-2">{type}</p>
+    </>
   );
 };
 

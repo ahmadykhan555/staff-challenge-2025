@@ -6,18 +6,23 @@ import type { PaginationDirection } from '../../types/pagination';
 const AppTable: React.FC<{
   activePage?: number;
   activeRowId?: string;
-  headerRow?: ReactNode;
-  tableDataNode?: ReactNode;
+  headerRowComponent?: ReactNode;
+  dataRowComponent?: ReactNode;
   totalPages: number;
   onRowClicked: (id: string) => void;
-
   onPaginationClicked: (direction: PaginationDirection) => void;
-}> = ({ activePage = 1, headerRow, tableDataNode, onPaginationClicked, totalPages }) => {
+}> = ({
+  activePage = 1,
+  headerRowComponent,
+  dataRowComponent,
+  onPaginationClicked,
+  totalPages,
+}) => {
   return (
     <div className="relative">
       <table className="w-full ">
-        <thead className="font-bold uppercase text-center border-b">{headerRow}</thead>
-        <tbody>{tableDataNode}</tbody>
+        <thead className="font-bold uppercase text-center border-b">{headerRowComponent}</thead>
+        <tbody>{dataRowComponent}</tbody>
       </table>
       <AppPagination
         activePage={activePage}

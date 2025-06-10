@@ -140,9 +140,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
                 onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
                 onPaginationClicked={(direction: 'next' | 'prev') => handlePageSelect(direction)}
                 activePage={pageNumber}
-                headerRow={<TableHeaderRow />}
+                headerRowComponent={<TableHeaderRow />}
                 totalPages={totalPages}
-                tableDataNode={vehiclesForCurrentPage.map((entry) => {
+                dataRowComponent={vehiclesForCurrentPage.map((entry) => {
                   const mappedData = transformVehicleToTableRow(entry);
                   return (
                     <TableDataRow

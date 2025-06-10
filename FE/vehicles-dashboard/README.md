@@ -16,6 +16,10 @@ Prettier has been configured to make sure clean code and started formatting prac
 
 To ensure coding standards are maintained, husky is configured to run typecheck and linting on `pre-commit` and upon `pre-push` addition tests will be run
 
+### Styling
+
+Tailwind is chosen as the styling library because of its granular approach which makes development faster. The application can be adapted to any branding using the tailwind config file to extend theme. To demonstrate this I have added a custom color `free-now-red` and custom font size `2xs`
+
 ### Code Organization
 
 The codebase has been organized into logical directories for clear structure. The aim here is to isolate the business logic layer from the UI layer to ensure maximum flexibility. We will make use of `components` & `pages` for UI. Components are further divided into Base and Feature components with Base components being dumb components.

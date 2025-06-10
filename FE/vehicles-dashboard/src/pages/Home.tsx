@@ -15,7 +15,8 @@ const HomePage: React.FC<HomeProps> = () => {
     <section className="md:h-1/2 flex">
       <Card className="flex flex-col m-auto items-center space-y-4">
         <Headline size={'xl'}>
-          Welcome to <span className="text-red-600 uppercase font-normal">FreeNow</span> Dashboard
+          Welcome to <span className="text-free-now-red uppercase font-normal">FreeNow</span>{' '}
+          Dashboard
         </Headline>
         <AppButton text="Lets explore" to={ROUTES.dashboard.path} />
       </Card>
