@@ -11,7 +11,7 @@ export const fetchShareNowVehicles = (): Promise<Vehicle[]> => {
     })
       .then(async (response) => {
         const result: { placemarks: ShareNowVehicle[] } = await response.json();
-        const correctedResult: ShareNowVehicle[] = result.placemarks.map(
+        const correctedResult: Vehicle[] = result.placemarks.map(
           ({
             address = '-',
             condition = '-',
@@ -24,7 +24,7 @@ export const fetchShareNowVehicles = (): Promise<Vehicle[]> => {
           }) => ({
             address,
             condition,
-            licencePlate,
+            licensePlate: licencePlate,
             state,
             engineType,
             type: 'share now',
@@ -33,7 +33,7 @@ export const fetchShareNowVehicles = (): Promise<Vehicle[]> => {
             coordinates: [coordinates[1], coordinates[0], coordinates[2]],
           })
         );
-        resolve(orderBy(correctedResult, 'licencePlate', 'asc'));
+        resolve(correctedResult);
       })
       .catch((e) => {
         const navigate = useNavigate();
@@ -65,7 +65,7 @@ export const fetchFreeNowVehicles = (): Promise<Vehicle[]> => {
             address,
             condition,
             id,
-            licencePlate,
+            licensePlate: licencePlate,
             state,
             coordinates: [coordinate?.latitude || 0, coordinate?.longitude || 0],
             type: 'free now',
@@ -73,8 +73,7 @@ export const fetchFreeNowVehicles = (): Promise<Vehicle[]> => {
             fuel,
           })
         );
-
-        resolve(orderBy(correctedResult, 'licencePlate', 'asc'));
+        resolve(correctedResult);
       })
       .catch((e) => reject(e));
   });
@@ -85,7 +84,7 @@ export const fetchVehicles = async () => {
     fetchShareNowVehicles(),
     fetchFreeNowVehicles(),
   ]);
-  return orderBy([...shareNowVehicles, ...freeNowVehicles], 'licencePlate', 'asc');
+  return orderBy([...shareNowVehicles, ...freeNowVehicles], 'licensePlate', 'asc');
 };
 
 const getVehiclesEndpoint = (type: 'share-now' | 'free-now') => {

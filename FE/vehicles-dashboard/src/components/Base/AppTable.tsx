@@ -10,7 +10,7 @@ const AppTable: React.FC<{
   dataRowsComponent?: ReactNode;
   totalPages: number;
   onRowClicked: (id: string) => void;
-  onPaginationClicked: (direction: PaginationDirection) => void;
+  onPaginationClicked: (direction: PaginationDirection, pageNumber?: number) => void;
 }> = ({
   activePage = 1,
   headerRowComponent,
@@ -19,7 +19,7 @@ const AppTable: React.FC<{
   totalPages,
 }) => {
   return (
-    <div className="max-h-full border overflow-auto">
+    <div className="max-h-full overflow-auto">
       <table className="w-full max-h-full overflow-auto">
         <thead className="font-bold uppercase text-center border-b">{headerRowComponent}</thead>
         <tbody>{dataRowsComponent}</tbody>
@@ -27,7 +27,9 @@ const AppTable: React.FC<{
       <AppPagination
         activePage={activePage}
         totalPages={totalPages}
-        onPaginationClicked={(direction) => onPaginationClicked(direction)}
+        onPaginationClicked={({ direction, pageNumber }) =>
+          onPaginationClicked(direction, pageNumber)
+        }
       />
     </div>
   );

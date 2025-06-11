@@ -1,31 +1,15 @@
 import { Marker, Popup, useMap } from 'react-leaflet';
 import { MapContainer } from 'react-leaflet/MapContainer';
 import { TileLayer } from 'react-leaflet/TileLayer';
-import L from 'leaflet';
-import FreeNowCarIcon from './../assets/icons/map/free-now-car.svg';
-import ShareNowCarIcon from './../assets/icons/map/share-now-car.svg';
 import 'leaflet/dist/leaflet.css';
 
 const GLOBAL_MAP_CENTER: LatLngExpression = [53.5511, 9.9937];
 
-import type { LatLngBoundsExpression, LatLngExpression } from 'leaflet';
-import { useEffect } from 'react';
+import type { LatLngBoundsExpression, LatLngExpression, Marker as MarkerType } from 'leaflet';
+import { useEffect, useRef } from 'react';
 import type { VehicleType } from '../types';
-import { setMapBounds, setMapCenter } from '../services/maps';
-
-const freeNowCarIcon = L.icon({
-  iconUrl: FreeNowCarIcon, // or use import if bundling
-  iconSize: [48, 48], // [width, height] in pixels
-  iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
-  popupAnchor: [0, -32], // point from which the popup should open relative to the iconAnchor
-});
-
-const shareNowCarIcon = L.icon({
-  iconUrl: ShareNowCarIcon,
-  iconSize: [48, 48], // [width, height] in pixels
-  iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
-  popupAnchor: [0, -32], // point from which the popup should open relative to the iconAnchor
-});
+import { markerForVehicleType, setMapBounds, setMapCenter } from '../services/maps';
+import { isEqual } from 'lodash';
 
 type MapMarker = {
   coordinates: LatLngExpression;
@@ -39,6 +23,14 @@ const AppMap: React.FC<{
   bounds?: LatLngBoundsExpression;
   onMarkerClicked: (coordinates: LatLngExpression) => void;
 }> = ({ markers, center, bounds, onMarkerClicked }) => {
+  const markerRef = useRef<MarkerType>(null);
+
+  useEffect(() => {
+    if (markerRef.current) {
+      markerRef.current.openPopup();
+    }
+  }, [center]);
+
   return (
     <>
       <MapContainer
@@ -54,12 +46,13 @@ const AppMap: React.FC<{
 
         {markers.map((marker) => (
           <Marker
+            ref={isEqual(marker.coordinates, center) ? markerRef : undefined}
             key={marker.coordinates.toString()}
             position={marker.coordinates}
             eventHandlers={{
               click: () => onMarkerClicked(marker.coordinates),
             }}
-            icon={marker.type === 'free now' ? freeNowCarIcon : shareNowCarIcon}
+            icon={markerForVehicleType(marker.type)}
           >
             {marker.text && (
               <Popup autoClose={true} closeOnClick={true}>

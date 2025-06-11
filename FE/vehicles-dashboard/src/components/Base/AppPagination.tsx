@@ -3,7 +3,13 @@ import type { PaginationDirection } from '../../types/pagination';
 import { ChevronRightIcon, ChevronLeftIcon } from '@freenow/wave';
 
 type Props = {
-  onPaginationClicked: (direction: PaginationDirection) => void;
+  onPaginationClicked: ({
+    direction,
+    pageNumber,
+  }: {
+    direction: PaginationDirection;
+    pageNumber?: number;
+  }) => void;
   activePage: number;
   totalPages?: number;
 };
@@ -41,7 +47,7 @@ const AppPagination: React.FC<Props> = ({
     <div className="flex items-center border-x border  rounded-md mx-auto w-[300px] sticky bottom-2 bg-white z-10 shadow-md">
       <button
         className="p-2 border-r flex-1 disabled:opacity-50 flex justify-center"
-        onClick={() => onPaginationClicked('prev')}
+        onClick={() => onPaginationClicked({ direction: 'prev' })}
         disabled={activePage <= 1}
       >
         <ChevronLeftIcon />
@@ -50,7 +56,13 @@ const AppPagination: React.FC<Props> = ({
       {pagesToShow.map((pageNumber, idx) => (
         <span
           key={`pagination-control-page-${idx}`}
-          className={`border flex-1 border-transparent text-center  ${pageNumber === activePage ? 'font-bold' : ''}`}
+          className={`border flex-1 cursor-pointer border-transparent text-center  ${pageNumber === activePage ? 'font-bold' : ''}`}
+          onClick={() =>
+            onPaginationClicked({
+              direction: 'next',
+              pageNumber: pageNumber ? parseInt(pageNumber.toString()) : undefined,
+            })
+          }
         >
           {pageNumber}
         </span>
@@ -58,7 +70,7 @@ const AppPagination: React.FC<Props> = ({
 
       <button
         className="p-2 border-l flex-1 disabled:opacity-50 flex justify-center"
-        onClick={() => onPaginationClicked('next')}
+        onClick={() => onPaginationClicked({ direction: 'next' })}
         disabled={totalPages !== undefined && activePage >= totalPages}
       >
         <ChevronRightIcon />
