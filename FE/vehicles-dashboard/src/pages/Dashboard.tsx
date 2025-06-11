@@ -15,6 +15,7 @@ import { useSearchParams } from 'react-router-dom';
 import VehiclesTableHeaderRow from '../components/Dashboard/VehiclesTableHeaderRow';
 import DashboardLoadingState from '../components/Dashboard/LoadingState';
 import VehicleInfoRow from '../components/Dashboard/VehicleInfoRow';
+import DashboardEmptyState from '../components/Dashboard/EmptyState';
 
 const Dashboard: React.FC = () => {
   useDocumentTitle('Vehicles Dashboard');
@@ -66,11 +67,16 @@ const Dashboard: React.FC = () => {
 
   // helpers
   const initData = async () => {
-    setIsLoading(true);
-    const allVehicles = await fetchVehicles();
-    setProductForSelectedPage(allVehicles, pageNumber);
-    dispatch(setVehiclesList(allVehicles));
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const allVehicles = await fetchVehicles();
+      setProductForSelectedPage(allVehicles, pageNumber);
+      dispatch(setVehiclesList(allVehicles));
+    } catch (e) {
+      console.error('Error loading initial data in Dashboard ', e);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleVehicleSelected = (licencePlate: string) => {
@@ -111,6 +117,8 @@ const Dashboard: React.FC = () => {
       <section className={`bg-white h-full flex flex-col gap-4 md:gap-y-8  `}>
         {isLoading ? (
           <DashboardLoadingState />
+        ) : !isLoading && !vehicles.length ? (
+          <DashboardEmptyState />
         ) : (
           <>
             <div className={`max-md:h-1/2 md:!h-1/3  w-full xl:container md:mx-auto`}>

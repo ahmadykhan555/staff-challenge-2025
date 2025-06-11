@@ -1,6 +1,7 @@
 import { orderBy } from 'lodash';
 import { BASE_URL, GLOBAL_HEADERS } from '../../constants/api';
 import type { FreeNowVehicle, ShareNowVehicle, Vehicle } from '../../types/vehicle';
+import { useNavigate } from 'react-router-dom';
 
 export const fetchShareNowVehicles = (): Promise<Vehicle[]> => {
   return new Promise((resolve, reject) => {
@@ -34,7 +35,11 @@ export const fetchShareNowVehicles = (): Promise<Vehicle[]> => {
         );
         resolve(orderBy(correctedResult, 'licencePlate', 'asc'));
       })
-      .catch(() => reject());
+      .catch((e) => {
+        const navigate = useNavigate();
+        navigate('/error');
+        reject(e);
+      });
   });
 };
 
