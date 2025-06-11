@@ -1,7 +1,7 @@
-import type { TableVehicle } from '../../types';
-import AppBadge from '../Base/AppBadge';
-import VehicleIcon from '../Base/VehicleIcon';
-import VehicleCondition from './VehicleCondition';
+import type { TableVehicle } from '../../../types';
+import AppBadge from '../../Base/AppBadge';
+import VehicleIcon from '../../Base/VehicleIcon';
+import VehicleCondition from '../VehicleCondition';
 
 const VehicleInfoRow: React.FC<{
   vehicle: TableVehicle;

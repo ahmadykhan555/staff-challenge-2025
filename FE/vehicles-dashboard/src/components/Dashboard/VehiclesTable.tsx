@@ -1,6 +1,6 @@
 import { transformVehicleToTableRow } from '../../utils';
 import AppTable from '../Base/AppTable';
-import VehicleInfoRow from './VehicleInfoRow';
+import VehicleInfoRow from './VehicleInfoRow/VehicleInfoRow';
 import VehiclesTableHeaderRow from './VehiclesTableHeaderRow';
 import { useVehiclesPagination } from '../../hooks/useVehiclesPagination';
 
