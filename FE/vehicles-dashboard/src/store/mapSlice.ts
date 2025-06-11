@@ -9,8 +9,9 @@ const initialState: MapState = {
   zoomLevel: 15,
 };
 
+// can be used if Map State is needed globally
 const mapSlice = createSlice({
-  name: 'navigation',
+  name: 'map',
   initialState,
   reducers: {
     setMapCenter(state, action: PayloadAction<LatLngExpression>) {

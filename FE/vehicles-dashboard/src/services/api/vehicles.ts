@@ -3,7 +3,7 @@ import { BASE_URL, GLOBAL_HEADERS } from '../../constants/api';
 import type { FreeNowVehicle, ShareNowVehicle, Vehicle } from '../../types/vehicle';
 import { useNavigate } from 'react-router-dom';
 
-export const fetchShareNowVehicles = (): Promise<Vehicle[]> => {
+const fetchShareNowVehicles = (): Promise<Vehicle[]> => {
   return new Promise((resolve, reject) => {
     fetch(getVehiclesEndpoint('share-now'), {
       method: 'GET',
@@ -43,7 +43,7 @@ export const fetchShareNowVehicles = (): Promise<Vehicle[]> => {
   });
 };
 
-export const fetchFreeNowVehicles = (): Promise<Vehicle[]> => {
+const fetchFreeNowVehicles = (): Promise<Vehicle[]> => {
   return new Promise((resolve, reject) => {
     fetch(getVehiclesEndpoint('free-now'), {
       method: 'GET',
