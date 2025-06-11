@@ -4,15 +4,15 @@ import { vi } from 'vitest';
 import { getFuelString } from '../../../utils';
 import { MOCK_VEHICLE } from '../../../constants';
 
-vi.mock('../Base/AppBadge', () => ({
+vi.mock('../../Base/AppBadge', () => ({
   default: (props: any) => <div data-testid="app-badge">{props.text}</div>,
 }));
 
-vi.mock('../Base/VehicleIcon', () => ({
+vi.mock('../../Base/VehicleIcon', () => ({
   default: (props: any) => <div data-testid="vehicle-icon">{props.type}</div>,
 }));
 
-vi.mock('./VehicleCondition', () => ({
+vi.mock('./../VehicleCondition', () => ({
   default: (props: any) => (
     <div data-testid="vehicle-condition">
       condition: {props.condition}, fuel: {getFuelString(props.fuel)}

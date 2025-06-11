@@ -3,7 +3,7 @@ import { vi } from 'vitest';
 import VehiclesMap from './VehiclesMap';
 import { MOCK_VEHICLE } from '../../../constants';
 
-vi.mock('../AppMap', () => ({
+vi.mock('../../AppMap', () => ({
   default: ({ center, markers, bounds, onMarkerClicked }: any) => {
     return (
       <div data-testid="app-map">
@@ -26,7 +26,7 @@ vi.mock('../AppMap', () => ({
 // Mock useVehiclesMap hook
 const handleSelectedMarker = vi.fn();
 
-vi.mock('../../hooks/useVehiclesMap', () => ({
+vi.mock('../../../hooks/useVehiclesMap', () => ({
   default: () => ({
     handleSelectedMarker,
     mapBounds: { north: 1, south: 2, east: 3, west: 4 },
