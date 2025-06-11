@@ -8,7 +8,7 @@ const initialState: VehiclesState = {
 };
 
 const vehicleSlice = createSlice({
-  name: 'navigation',
+  name: 'vehicles',
   initialState,
   reducers: {
     setVehiclesList(state, action: PayloadAction<Vehicle[]>) {

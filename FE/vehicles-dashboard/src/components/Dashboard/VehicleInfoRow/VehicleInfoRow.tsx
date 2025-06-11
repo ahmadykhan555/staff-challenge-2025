@@ -50,6 +50,7 @@ const VehicleInfoRow: React.FC<{
         <td
           className="p-3 max-xl:!max-w-[200px] text-center text-sm whitespace-nowrap overflow-hidden text-ellipsis capitalize"
           key={idx}
+          data-testid={vehicle[key as keyof TableVehicle]}
         >
           {renderComponentForProperty(key as keyof TableVehicle)}
         </td>
