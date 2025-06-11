@@ -5,7 +5,7 @@ import { ROUTES } from '../constants';
 import AppButton from '../components/Base/AppButton';
 
 const HomePage: React.FC = () => {
-  useDocumentTitle('Now!');
+  useDocumentTitle('Home');
 
   return (
     <section className="md:h-1/2 flex">

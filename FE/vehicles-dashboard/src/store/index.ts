@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import navigationReducer from './navigationSlice';
-import vehiclesSlice from './vehiclesSlice';
+import vehiclesReducer from './vehiclesSlice';
 
 export const store = configureStore({
-  reducer: { navigationReducer, vehiclesSlice },
+  reducer: { vehiclesReducer, navigationReducer },
 });
 
 export type GlobalState = ReturnType<typeof store.getState>;

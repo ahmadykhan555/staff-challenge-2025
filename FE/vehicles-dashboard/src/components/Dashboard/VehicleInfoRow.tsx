@@ -1,9 +1,9 @@
 import type { TableVehicle } from '../../types';
 import AppBadge from '../Base/AppBadge';
-import VehicleIcon from './VehicleIcon';
+import VehicleIcon from '../Base/VehicleIcon';
 import VehicleCondition from './VehicleCondition';
 
-const TableDataRow: React.FC<{
+const VehicleInfoRow: React.FC<{
   vehicle: TableVehicle;
   activeRowId: string;
   onRowClicked: (licencePlate: string) => void;
@@ -44,7 +44,7 @@ const TableDataRow: React.FC<{
       onClick={() => {
         onRowClicked(vehicle.licencePlate);
       }}
-      className={`bg-white cursor-pointer border-b ${vehicle.licencePlate == activeRowId ? 'border-red-300 border bg-red-100' : ''}  hover:!bg-red-100`}
+      className={`bg-white cursor-pointer border-b ${vehicle.licencePlate == activeRowId ? 'border-red-300 border !bg-red-100' : ''}  hover:!bg-red-100`}
     >
       {Object.keys(vehicle).map((key, idx) => (
         <td
@@ -58,4 +58,4 @@ const TableDataRow: React.FC<{
   );
 };
 
-export default TableDataRow;
+export default VehicleInfoRow;
