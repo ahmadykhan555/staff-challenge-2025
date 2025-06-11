@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants';
-import Logo from '../assets/icons/logo.svg';
+import AppIcon from './Base/AppIcon';
 
 const AppHeader = () => {
   return (
     <header className="flex border-b shadow-sm items-center">
       <Link to={ROUTES.home.path} className="px-4 ">
-        <img src={Logo} />
+        <AppIcon name="logo" />
       </Link>
       {Object.values(ROUTES).map(
         ({ displayName, path, hidden }) =>

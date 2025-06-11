@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Skeleton } from '@freenow/wave';
 import AppTable from '../components/Base/AppTable';
 import AppMap from '../components/AppMap';
 import { fetchVehicles } from '../services/api';
@@ -13,31 +12,31 @@ import type { Vehicle } from '../types';
 import L from 'leaflet';
 import { transformVehicleToTableRow } from '../utils';
 import { useSearchParams } from 'react-router-dom';
-import TableHeaderRow from '../components/Dashboard/TableHeaderRow';
-import TableDataRow from '../components/Dashboard/TableDataRow';
+import VehiclesTableHeaderRow from '../components/Dashboard/VehiclesTableHeaderRow';
+import DashboardLoadingState from '../components/Dashboard/LoadingState';
+import VehicleInfoRow from '../components/Dashboard/VehicleInfoRow';
 
 const Dashboard: React.FC = () => {
-  useDocumentTitle('Now! Dashboard');
+  useDocumentTitle('Vehicles Dashboard');
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [vehiclesForCurrentPage, setVehiclesForCurrentPage] = useState<Vehicle[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [mapBounds, setMapBounds] = useState<LatLngBoundsExpression>();
-  const vehicles = useAppSelector((state) => state.vehiclesSlice.list);
+  const vehicles = useAppSelector((state) => state.vehiclesReducer.list);
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const selectedVehicle = useAppSelector((state) => state.vehiclesSlice.selectedVehicle);
+  const selectedVehicle = useAppSelector((state) => state.vehiclesReducer.selectedVehicle);
   const dispatch = useAppDispatch();
 
   const totalPages = useMemo(() => {
     return Math.max(1, Math.ceil(vehicles.length / PAGE_SIZE));
   }, [vehicles.length]);
 
+  // effects
   useEffect(() => {
     initData();
   }, []);
 
-  // When pageNumber changes, update displayed vehicles
   useEffect(() => {
     if (vehicles.length > 0) {
       setProductForSelectedPage(vehicles, pageNumber);
@@ -49,7 +48,6 @@ const Dashboard: React.FC = () => {
       return;
     }
     const rawPage = parseInt(searchParams.get('page') || '1', 10);
-
     let sanitizedPage = isNaN(rawPage) || rawPage < 1 ? 1 : rawPage;
     if (sanitizedPage > totalPages) {
       sanitizedPage = totalPages;
@@ -66,14 +64,12 @@ const Dashboard: React.FC = () => {
     }
   }, [searchParams, vehicles.length, totalPages, pageNumber]);
 
+  // helpers
   const initData = async () => {
     setIsLoading(true);
     const allVehicles = await fetchVehicles();
-
     setProductForSelectedPage(allVehicles, pageNumber);
-
     dispatch(setVehiclesList(allVehicles));
-
     setIsLoading(false);
   };
 
@@ -114,10 +110,7 @@ const Dashboard: React.FC = () => {
     <>
       <section className={`bg-white h-full flex flex-col gap-4 md:gap-y-8  `}>
         {isLoading ? (
-          <>
-            <Skeleton animated className="border !bg-slate-50 !w-full md:!h-2/5" />
-            <Skeleton animated className="border !bg-slate-50 w-full flex-1" />
-          </>
+          <DashboardLoadingState />
         ) : (
           <>
             <div className={`max-md:h-1/2 md:!h-1/3  w-full xl:container md:mx-auto`}>
@@ -133,20 +126,20 @@ const Dashboard: React.FC = () => {
               />
             </div>
 
-            <div className="flex-1 max-h-screen !rounded-md overflow-auto xl:container w-full mx-auto">
+            <div className="flex-1 max-h-screen overflow-auto xl:container w-full mx-auto">
               <AppTable
                 activeRowId={selectedVehicle?.licencePlate}
                 onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
                 onPaginationClicked={(direction: 'next' | 'prev') => handlePageSelect(direction)}
                 activePage={pageNumber}
-                headerRowComponent={<TableHeaderRow />}
+                headerRowComponent={<VehiclesTableHeaderRow />}
                 totalPages={totalPages}
-                dataRowComponent={vehiclesForCurrentPage.map((entry) => {
+                dataRowsComponent={vehiclesForCurrentPage.map((entry) => {
                   const mappedData = transformVehicleToTableRow(entry);
                   return (
-                    <TableDataRow
+                    <VehicleInfoRow
                       vehicle={mappedData}
-                      activeRowId={selectedVehicle?.licencePlate}
+                      activeRowId={selectedVehicle?.licencePlate || ''}
                       onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
                     />
                   );

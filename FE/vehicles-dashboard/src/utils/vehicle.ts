@@ -30,6 +30,6 @@ export const transformVehicleToTableRow = ({
     coordinates: (coordinates as number[]).join(', '),
     address,
     state,
-    conditionAndFuel: { condition, fuel },
+    conditionAndFuel: { condition, fuel: fuel || -1 },
   };
 };

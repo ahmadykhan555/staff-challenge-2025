@@ -1,9 +1,7 @@
 import React from 'react';
 import type { VehicleCondition } from '../../types';
-
-import HappyIcon from '../../assets/icons/happy.svg';
-import SadIcon from '../../assets/icons/sad.svg';
 import { getFuelString } from '../../utils';
+import AppIcon from '../Base/AppIcon';
 
 type Props = {
   condition: VehicleCondition;
@@ -14,7 +12,7 @@ const VehicleConditionLabel: React.FC<Props> = ({ condition, fuel }) => {
   return (
     <div className="flex items-center justify-center ">
       {condition !== '-' ? (
-        <img className="size-4 mr-4" src={condition === 'BAD' ? SadIcon : HappyIcon} />
+        <AppIcon classes="mr-4" name={condition === 'BAD' ? 'sadFace' : 'happyFace'} size="md" />
       ) : (
         condition
       )}

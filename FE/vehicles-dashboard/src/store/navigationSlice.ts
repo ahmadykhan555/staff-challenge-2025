@@ -9,6 +9,7 @@ const initialState: NavigationState = {
   items: [],
 };
 
+// can be used if we need to support dynamic navigation
 const navigationSlice = createSlice({
   name: 'navigation',
   initialState,
