@@ -16,8 +16,7 @@ import { useSearchParams } from 'react-router-dom';
 import TableHeaderRow from '../components/Dashboard/TableHeaderRow';
 import TableDataRow from '../components/Dashboard/TableDataRow';
 
-type DashboardProps = {};
-const Dashboard: React.FC<DashboardProps> = () => {
+const Dashboard: React.FC = () => {
   useDocumentTitle('Now! Dashboard');
 
   const [isLoading, setIsLoading] = useState<boolean>(false);

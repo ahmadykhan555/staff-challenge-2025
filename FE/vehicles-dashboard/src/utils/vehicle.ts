@@ -1,4 +1,4 @@
-import type { TableVehicle, Vehicle, VehicleCondition } from '../types';
+import type { TableVehicle, Vehicle } from '../types';
 
 export const getFuelString = (fuel?: number) => {
   if (!fuel && fuel !== 0) {
