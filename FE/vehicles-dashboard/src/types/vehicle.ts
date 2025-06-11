@@ -36,9 +36,16 @@ export type FreeNowVehicle = Vehicle & {
 
 export type VehicleType = 'free now' | 'share now';
 
-export type TableVehicle = Omit<Vehicle, 'id' | 'engineType' | 'fuel' | 'condition'> & {
+export type TableVehicle = Omit<
+  Vehicle,
+  'id' | 'engineType' | 'fuel' | 'condition' | 'coordinates'
+> & {
   conditionAndFuel: {
     condition: VehicleCondition;
     fuel: number;
+  };
+  coordinates: {
+    raw: LatLngExpression;
+    displayValue: string;
   };
 };

@@ -27,7 +27,7 @@ export const transformVehicleToTableRow = ({
   return {
     type,
     licencePlate,
-    coordinates: (coordinates as number[]).join(', '),
+    coordinates: { displayValue: (coordinates as number[]).join(', '), raw: coordinates },
     address,
     state,
     conditionAndFuel: { condition, fuel },

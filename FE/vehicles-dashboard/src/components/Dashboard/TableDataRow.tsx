@@ -29,6 +29,10 @@ const TableDataRow: React.FC<{
           />
         );
       }
+
+      case 'coordinates': {
+        return vehicle.coordinates.displayValue;
+      }
       default:
         return <>{vehicle[key]}</>;
     }
