@@ -30,6 +30,7 @@ export type ShareNowVehicle = Vehicle & {
 export type VehiclesState = {
   list: Vehicle[];
   selectedVehicle: Vehicle | null;
+  vehiclesForCurrentPage: Vehicle[];
 };
 
 export type FreeNowVehicle = Vehicle & {
