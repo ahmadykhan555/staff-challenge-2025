@@ -1,34 +1,9 @@
-import L from 'leaflet';
-import type { LatLngBoundsExpression, LatLngExpression } from 'leaflet';
-import { useAppDispatch, useAppSelector } from '../../hooks/useReduxStore';
 import AppMap from '../AppMap';
-import { isEqual } from 'lodash';
-import { setSelectedVehicle } from '../../store/vehiclesSlice';
-import { useEffect, useState } from 'react';
+import useVehiclesMap from '../../hooks/useVehiclesMap';
 
 const VehiclesMap: React.FC = () => {
-  const { selectedVehicle, vehiclesForCurrentPage } = useAppSelector((state) => ({
-    selectedVehicle: state.vehiclesReducer.selectedVehicle,
-    vehiclesForCurrentPage: state.vehiclesReducer.vehiclesForCurrentPage,
-  }));
-
-  const dispatch = useAppDispatch();
-  const handleSelectedMarker = (coordinates: LatLngExpression) => {
-    const matchingVehicle = vehiclesForCurrentPage.find((vehicle) =>
-      isEqual(coordinates, vehicle.coordinates)
-    );
-    if (matchingVehicle) {
-      dispatch(setSelectedVehicle(matchingVehicle));
-    }
-  };
-
-  const [mapBounds, setMapBounds] = useState<LatLngBoundsExpression>();
-
-  useEffect(() => {
-    if (vehiclesForCurrentPage.length) {
-      setMapBounds(L.latLngBounds(vehiclesForCurrentPage.map((v) => v.coordinates)));
-    }
-  }, [vehiclesForCurrentPage]);
+  const { handleSelectedMarker, mapBounds, selectedVehicle, vehiclesForCurrentPage } =
+    useVehiclesMap();
 
   return (
     <div
@@ -38,7 +13,7 @@ const VehiclesMap: React.FC = () => {
         center={selectedVehicle?.coordinates}
         markers={vehiclesForCurrentPage.map((vehicle) => ({
           coordinates: vehicle.coordinates,
-          text: vehicle.licencePlate,
+          text: vehicle.licensePlate,
           type: vehicle.type,
         }))}
         bounds={mapBounds}
