@@ -10,7 +10,7 @@ const AppTable: React.FC<{
   dataRowsComponent?: ReactNode;
   totalPages: number;
   onRowClicked: (id: string) => void;
-  onPaginationClicked: (direction: PaginationDirection) => void;
+  onPaginationClicked: (direction: PaginationDirection, pageNumber?: number) => void;
 }> = ({
   activePage = 1,
   headerRowComponent,
@@ -27,7 +27,9 @@ const AppTable: React.FC<{
       <AppPagination
         activePage={activePage}
         totalPages={totalPages}
-        onPaginationClicked={(direction) => onPaginationClicked(direction)}
+        onPaginationClicked={({ direction, pageNumber }) =>
+          onPaginationClicked(direction, pageNumber)
+        }
       />
     </div>
   );

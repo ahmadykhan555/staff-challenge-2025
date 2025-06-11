@@ -16,6 +16,7 @@ import VehiclesTableHeaderRow from '../components/Dashboard/VehiclesTableHeaderR
 import DashboardLoadingState from '../components/Dashboard/LoadingState';
 import VehicleInfoRow from '../components/Dashboard/VehicleInfoRow';
 import DashboardEmptyState from '../components/Dashboard/EmptyState';
+import type { PaginationDirection } from '../types/pagination';
 
 const Dashboard: React.FC = () => {
   useDocumentTitle('Vehicles Dashboard');
@@ -94,7 +95,10 @@ const Dashboard: React.FC = () => {
   };
 
   // Pagination button handler — only update URL param, not pageNumber directly
-  const handlePageSelect = (direction: 'next' | 'prev') => {
+  const handlePageSelect = (direction: PaginationDirection, toPageNumber?: number) => {
+    if (toPageNumber && toPageNumber > 0 && toPageNumber <= totalPages) {
+      return setSearchParams({ page: toPageNumber.toString() });
+    }
     const currentPage = parseInt(searchParams.get('page') || '1', 10);
     const newPage =
       direction === 'next' ? Math.min(currentPage + 1, totalPages) : Math.max(currentPage - 1, 1);
@@ -112,13 +116,13 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  let content: React.ReactNode;
+  let contentBlockToRender: React.ReactNode;
   if (isLoading) {
-    content = <DashboardLoadingState />;
+    contentBlockToRender = <DashboardLoadingState />;
   } else if (!isLoading && !vehicles.length) {
-    content = <DashboardEmptyState />;
+    contentBlockToRender = <DashboardEmptyState />;
   } else {
-    content = (
+    contentBlockToRender = (
       <>
         <div className={`max-md:h-1/2 md:!h-1/3  w-full xl:container md:mx-auto`}>
           <AppMap
@@ -137,7 +141,7 @@ const Dashboard: React.FC = () => {
           <AppTable
             activeRowId={selectedVehicle?.licencePlate}
             onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
-            onPaginationClicked={(direction: 'next' | 'prev') => handlePageSelect(direction)}
+            onPaginationClicked={(direction, pageNumber) => handlePageSelect(direction, pageNumber)}
             activePage={pageNumber}
             headerRowComponent={<VehiclesTableHeaderRow />}
             totalPages={totalPages}
@@ -159,7 +163,9 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <section className={`bg-white h-full flex flex-col gap-4 md:gap-y-8  `}>{content}</section>
+    <section className={`bg-white h-full flex flex-col gap-4 md:gap-y-8  `}>
+      {contentBlockToRender}
+    </section>
   );
 };
 export default Dashboard;
