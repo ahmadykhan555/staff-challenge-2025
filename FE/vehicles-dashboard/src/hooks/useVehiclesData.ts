@@ -12,10 +12,10 @@ export default function useVehiclesData() {
     const loadVehicles = async () => {
       try {
         setIsLoading(true);
-        const data = await fetchVehicles();
-        dispatch(setVehiclesList(data));
-      } catch (err) {
-        console.error('Failed to fetch vehicles:', err);
+        const vehiclesData = await fetchVehicles();
+        dispatch(setVehiclesList(vehiclesData));
+      } catch (error) {
+        console.error('Failed to fetch vehicles:', error);
       } finally {
         setIsLoading(false);
       }

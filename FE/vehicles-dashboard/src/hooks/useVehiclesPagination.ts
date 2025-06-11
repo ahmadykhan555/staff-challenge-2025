@@ -50,8 +50,10 @@ export const useVehiclesPagination = () => {
     setVehiclesForSelectedPage(nextPage);
   };
 
-  const handleVehicleSelected = (licencePlate: string) => {
-    const vehicle = vehiclesForCurrentPage.find((v) => v.licencePlate === licencePlate);
+  const handleVehicleSelected = (licensePlate: string) => {
+    const vehicle = vehiclesForCurrentPage.find(
+      (_vehicle) => _vehicle.licensePlate === licensePlate
+    );
     if (vehicle) dispatch(setSelectedVehicle(vehicle));
   };
 
