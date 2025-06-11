@@ -20,7 +20,7 @@ import DashboardEmptyState from '../components/Dashboard/EmptyState';
 const Dashboard: React.FC = () => {
   useDocumentTitle('Vehicles Dashboard');
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [vehiclesForCurrentPage, setVehiclesForCurrentPage] = useState<Vehicle[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [mapBounds, setMapBounds] = useState<LatLngBoundsExpression>();
@@ -112,53 +112,54 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  return (
-    <>
-      <section className={`bg-white h-full flex flex-col gap-4 md:gap-y-8  `}>
-        {isLoading ? (
-          <DashboardLoadingState />
-        ) : !isLoading && !vehicles.length ? (
-          <DashboardEmptyState />
-        ) : (
-          <>
-            <div className={`max-md:h-1/2 md:!h-1/3  w-full xl:container md:mx-auto`}>
-              <AppMap
-                center={selectedVehicle?.coordinates}
-                markers={vehiclesForCurrentPage.map((vehicle) => ({
-                  coordinates: vehicle.coordinates,
-                  text: vehicle.licencePlate,
-                  type: vehicle.type,
-                }))}
-                bounds={mapBounds}
-                onMarkerClicked={(markerCoordinates) => handleSelectedMarker(markerCoordinates)}
-              />
-            </div>
+  let content: React.ReactNode;
+  if (isLoading) {
+    content = <DashboardLoadingState />;
+  } else if (!isLoading && !vehicles.length) {
+    content = <DashboardEmptyState />;
+  } else {
+    content = (
+      <>
+        <div className={`max-md:h-1/2 md:!h-1/3  w-full xl:container md:mx-auto`}>
+          <AppMap
+            center={selectedVehicle?.coordinates}
+            markers={vehiclesForCurrentPage.map((vehicle) => ({
+              coordinates: vehicle.coordinates,
+              text: vehicle.licencePlate,
+              type: vehicle.type,
+            }))}
+            bounds={mapBounds}
+            onMarkerClicked={(markerCoordinates) => handleSelectedMarker(markerCoordinates)}
+          />
+        </div>
 
-            <div className="flex-1 max-h-screen overflow-auto xl:container w-full mx-auto">
-              <AppTable
-                activeRowId={selectedVehicle?.licencePlate}
-                onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
-                onPaginationClicked={(direction: 'next' | 'prev') => handlePageSelect(direction)}
-                activePage={pageNumber}
-                headerRowComponent={<VehiclesTableHeaderRow />}
-                totalPages={totalPages}
-                dataRowsComponent={vehiclesForCurrentPage.map((entry) => {
-                  const mappedData = transformVehicleToTableRow(entry);
-                  return (
-                    <VehicleInfoRow
-                      key={`vehicle-info-row-${entry.id}`}
-                      vehicle={mappedData}
-                      activeRowId={selectedVehicle?.licencePlate || ''}
-                      onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
-                    />
-                  );
-                })}
-              />
-            </div>
-          </>
-        )}
-      </section>
-    </>
+        <div className="flex-1 max-h-screen overflow-auto xl:container w-full mx-auto">
+          <AppTable
+            activeRowId={selectedVehicle?.licencePlate}
+            onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
+            onPaginationClicked={(direction: 'next' | 'prev') => handlePageSelect(direction)}
+            activePage={pageNumber}
+            headerRowComponent={<VehiclesTableHeaderRow />}
+            totalPages={totalPages}
+            dataRowsComponent={vehiclesForCurrentPage.map((entry) => {
+              const mappedData = transformVehicleToTableRow(entry);
+              return (
+                <VehicleInfoRow
+                  key={`vehicle-info-row-${entry.id}`}
+                  vehicle={mappedData}
+                  activeRowId={selectedVehicle?.licencePlate || ''}
+                  onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
+                />
+              );
+            })}
+          />
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <section className={`bg-white h-full flex flex-col gap-4 md:gap-y-8  `}>{content}</section>
   );
 };
 export default Dashboard;
