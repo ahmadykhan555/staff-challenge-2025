@@ -124,7 +124,9 @@ const Dashboard: React.FC = () => {
   } else {
     contentBlockToRender = (
       <>
-        <div className={`max-md:h-1/2 md:!h-1/3  w-full xl:container md:mx-auto`}>
+        <div
+          className={`max-md:h-1/2 md:!h-1/3 w-full xl:container md:mx-auto rounded-lg overflow-hidden border`}
+        >
           <AppMap
             center={selectedVehicle?.coordinates}
             markers={vehiclesForCurrentPage.map((vehicle) => ({
@@ -137,7 +139,7 @@ const Dashboard: React.FC = () => {
           />
         </div>
 
-        <div className="flex-1 max-h-screen overflow-auto xl:container w-full mx-auto">
+        <div className="flex-1 overflow-auto xl:container w-full mx-auto border rounded-md">
           <AppTable
             activeRowId={selectedVehicle?.licencePlate}
             onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
@@ -163,7 +165,7 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <section className={`bg-white h-full flex flex-col gap-4 md:gap-y-8  `}>
+    <section className={`bg-white h-full flex flex-col gap-4 md:gap-y-6  `}>
       {contentBlockToRender}
     </section>
   );

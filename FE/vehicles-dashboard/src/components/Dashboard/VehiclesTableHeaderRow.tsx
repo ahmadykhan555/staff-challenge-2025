@@ -2,7 +2,7 @@ import { DEFAULT_VEHICLE_LISTING_COLUMNS } from '../../constants/dashboard';
 
 const VehiclesTableHeaderRow: React.FC = () => {
   return (
-    <tr className="sticky -top-1 bg-white z-10 shadow-md">
+    <tr className="sticky -top-1 bg-white z-10 shadow-sm">
       {DEFAULT_VEHICLE_LISTING_COLUMNS.map(({ displayName, id }) => (
         <th className="cursor-pointer text-sm p-3" key={id}>
           {displayName}

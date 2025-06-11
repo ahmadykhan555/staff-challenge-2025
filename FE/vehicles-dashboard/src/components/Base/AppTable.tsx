@@ -19,7 +19,7 @@ const AppTable: React.FC<{
   totalPages,
 }) => {
   return (
-    <div className="max-h-full border overflow-auto">
+    <div className="max-h-full overflow-auto">
       <table className="w-full max-h-full overflow-auto">
         <thead className="font-bold uppercase text-center border-b">{headerRowComponent}</thead>
         <tbody>{dataRowsComponent}</tbody>
