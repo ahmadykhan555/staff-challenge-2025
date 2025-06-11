@@ -41,4 +41,8 @@ export type TableVehicle = Omit<Vehicle, 'id' | 'engineType' | 'fuel' | 'conditi
     condition: VehicleCondition;
     fuel: number;
   };
+  coordinates: {
+    raw: LatLngExpression;
+    displayValue: string;
+  };
 };

@@ -8,9 +8,10 @@ import 'leaflet/dist/leaflet.css';
 
 const GLOBAL_MAP_CENTER: LatLngExpression = [53.5511, 9.9937];
 
-import type { LatLngBoundsExpression, LatLngExpression, PointExpression } from 'leaflet';
+import type { LatLngBoundsExpression, LatLngExpression } from 'leaflet';
 import { useEffect } from 'react';
 import type { VehicleType } from '../types';
+import { setMapBounds, setMapCenter } from '../services/maps';
 
 const freeNowCarIcon = L.icon({
   iconUrl: FreeNowCarIcon, // or use import if bundling
@@ -80,24 +81,17 @@ const DynamicMapCenter: React.FC<{ center: LatLngExpression }> = ({ center }) =>
   const map = useMap();
 
   useEffect(() => {
-    map.flyTo(center, 18);
-  }, [center]);
+    setMapCenter(map, { center });
+  }, [center, map]);
 
   return <></>;
 };
 
 const DynamicMapBounds: React.FC<{ bounds: LatLngBoundsExpression }> = ({ bounds }) => {
   const map = useMap();
-
   useEffect(() => {
-    map.fitBounds(bounds, {
-      animate: true,
-      padding: {
-        x: 15,
-        y: 15,
-      } as PointExpression,
-    });
-  }, [bounds]);
+    setMapBounds(map, { bounds });
+  }, [bounds, map]);
 
   return <></>;
 };

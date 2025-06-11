@@ -1,0 +1,2 @@
+export const DEFAULT_ZOOM_LEVEL_STREET_VIEW = 18;
+export const DEFAULT_MAP_BOUNDS_PADDING = 10;
