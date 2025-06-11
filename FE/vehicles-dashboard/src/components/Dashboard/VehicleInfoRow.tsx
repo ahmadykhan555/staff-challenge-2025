@@ -5,7 +5,7 @@ import VehicleCondition from './VehicleCondition';
 
 const VehicleInfoRow: React.FC<{
   vehicle: TableVehicle;
-  activeRowId: any;
+  activeRowId: string;
   onRowClicked: (licencePlate: string) => void;
 }> = ({ vehicle, activeRowId, onRowClicked }) => {
   const renderComponentForProperty = (key: keyof TableVehicle) => {

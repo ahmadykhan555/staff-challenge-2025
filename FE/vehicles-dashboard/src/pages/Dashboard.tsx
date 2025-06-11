@@ -16,8 +16,7 @@ import VehiclesTableHeaderRow from '../components/Dashboard/VehiclesTableHeaderR
 import DashboardLoadingState from '../components/Dashboard/LoadingState';
 import VehicleInfoRow from '../components/Dashboard/VehicleInfoRow';
 
-type DashboardProps = {};
-const Dashboard: React.FC<DashboardProps> = () => {
+const Dashboard: React.FC = () => {
   useDocumentTitle('Vehicles Dashboard');
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -140,7 +139,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
                   return (
                     <VehicleInfoRow
                       vehicle={mappedData}
-                      activeRowId={selectedVehicle?.licencePlate}
+                      activeRowId={selectedVehicle?.licencePlate || ''}
                       onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
                     />
                   );

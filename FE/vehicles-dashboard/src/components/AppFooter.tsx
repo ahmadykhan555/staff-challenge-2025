@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Footer: React.FC<any> = () => {
+const Footer: React.FC = () => {
   return (
     <footer className="flex justify-between px-8 py-4 items-center text-sm">
       <h4>© {2025} All rights reserved</h4>
