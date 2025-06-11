@@ -4,7 +4,7 @@ import AppFooter from '../components/AppFooter';
 
 import { Outlet } from 'react-router-dom';
 
-const DefaultLayout: React.FC<{}> = () => {
+const DefaultLayout: React.FC = () => {
   return (
     <div className="flex flex-col h-screen">
       <AppHeader />

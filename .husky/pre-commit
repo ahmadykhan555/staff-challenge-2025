@@ -1,5 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
-echo "✅ Husky pre-commit hook ran"
-
+echo "✅ Running Husky pre-commit hook"
+cd FE/vehicles-dashboard/
 yarn lint

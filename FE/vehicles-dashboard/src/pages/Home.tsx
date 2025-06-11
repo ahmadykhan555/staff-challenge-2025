@@ -4,8 +4,7 @@ import { Card, Headline } from '@freenow/wave';
 import { ROUTES } from '../constants';
 import AppButton from '../components/Base/AppButton';
 
-type HomeProps = {};
-const HomePage: React.FC<HomeProps> = () => {
+const HomePage: React.FC = () => {
   useDocumentTitle('Now!');
 
   return (
