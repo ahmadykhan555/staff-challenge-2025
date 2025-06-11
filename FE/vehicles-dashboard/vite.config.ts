@@ -13,8 +13,10 @@ export default defineConfig(({ mode }) => {
   };
 
   if (JSON.parse(env.VITE_ENABLE_HTTPS || '')) {
-    (serverConfig.https as Record<string, string>).key = env.VITE_SSL_KEY;
-    (serverConfig.https as Record<string, string>).cert = env.VITE_SSL_CERT;
+    serverConfig.https = {
+      key: env.VITE_SSL_KEY,
+      cert: env.VITE_SSL_CERT,
+    };
   }
 
   return {
