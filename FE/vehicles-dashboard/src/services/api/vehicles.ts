@@ -73,7 +73,6 @@ export const fetchFreeNowVehicles = (): Promise<Vehicle[]> => {
             fuel,
           })
         );
-
         resolve(correctedResult);
       })
       .catch((e) => reject(e));
