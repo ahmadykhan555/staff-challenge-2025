@@ -19,14 +19,14 @@ export const transformVehicleToTableRow = ({
   address,
   type,
   coordinates,
-  licencePlate,
+  licensePlate,
   state,
   condition,
   fuel,
 }: Vehicle): TableVehicle => {
   return {
     type,
-    licencePlate,
+    licensePlate,
     coordinates: { displayValue: (coordinates as number[]).join(', '), raw: coordinates },
     address,
     state,

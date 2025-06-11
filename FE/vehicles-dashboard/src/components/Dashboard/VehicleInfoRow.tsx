@@ -6,7 +6,7 @@ import VehicleCondition from './VehicleCondition';
 const VehicleInfoRow: React.FC<{
   vehicle: TableVehicle;
   activeRowId: string;
-  onRowClicked: (licencePlate: string) => void;
+  onRowClicked: (licensePlate: string) => void;
 }> = ({ vehicle, activeRowId, onRowClicked }) => {
   const renderComponentForProperty = (key: keyof TableVehicle) => {
     switch (key) {
@@ -40,11 +40,11 @@ const VehicleInfoRow: React.FC<{
 
   return (
     <tr
-      key={vehicle.licencePlate}
+      key={vehicle.licensePlate}
       onClick={() => {
-        onRowClicked(vehicle.licencePlate);
+        onRowClicked(vehicle.licensePlate);
       }}
-      className={`bg-white cursor-pointer border-b last-of-type:border-0 ${vehicle.licencePlate == activeRowId ? 'border-red-300 border !bg-red-100' : ''}  hover:!bg-red-100`}
+      className={`bg-white cursor-pointer border-b last-of-type:border-0 ${vehicle.licensePlate == activeRowId ? 'border-red-300 border !bg-red-100' : ''}  hover:!bg-red-100`}
     >
       {Object.keys(vehicle).map((key, idx) => (
         <td

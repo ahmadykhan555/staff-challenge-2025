@@ -17,8 +17,8 @@ const VehiclesTable: React.FC = () => {
   return (
     <div className="flex-1 overflow-auto xl:container w-full mx-auto border rounded-md">
       <AppTable
-        activeRowId={selectedVehicle?.licencePlate}
-        onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
+        activeRowId={selectedVehicle?.licensePlate}
+        onRowClicked={(licensePlate) => handleVehicleSelected(licensePlate)}
         onPaginationClicked={(direction, pageNumber) => handlePageSelect(direction, pageNumber)}
         activePage={pageNumber}
         headerRowComponent={<VehiclesTableHeaderRow />}
@@ -29,8 +29,8 @@ const VehiclesTable: React.FC = () => {
             <VehicleInfoRow
               key={`vehicle-info-row-${entry.id}`}
               vehicle={mappedData}
-              activeRowId={selectedVehicle?.licencePlate || ''}
-              onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
+              activeRowId={selectedVehicle?.licensePlate || ''}
+              onRowClicked={(licensePlate) => handleVehicleSelected(licensePlate)}
             />
           );
         })}

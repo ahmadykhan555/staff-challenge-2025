@@ -33,6 +33,8 @@ export const setMapBounds = (
       x: padding,
       y: padding,
     } as L.PointExpression,
+    duration: 0.5,
+    animate: true,
   });
 };
 

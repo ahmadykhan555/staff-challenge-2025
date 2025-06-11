@@ -1,6 +1,6 @@
 export const DEFAULT_VEHICLE_TABLE_COLUMNS = [
   { displayName: 'type', id: 'type', sortKey: 'type' },
-  { displayName: 'licencePlate', id: 'licencePlate', sortKey: 'licencePlate' },
+  { displayName: 'licensePlate', id: 'licensePlate', sortKey: 'licensePlate' },
   { displayName: 'coordinates', id: 'coordinates', sortKey: 'coordinates' },
   { displayName: 'address', id: 'address', sortKey: 'address' },
   { displayName: 'state', id: 'state', sortKey: 'state' },

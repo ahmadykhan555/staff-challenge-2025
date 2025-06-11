@@ -18,13 +18,14 @@ export type Vehicle = {
   condition: VehicleCondition;
   fuel?: number;
   state: VehicleState;
-  licencePlate: string;
+  licensePlate: string;
   coordinates: LatLngExpression;
   type: VehicleType;
 };
 
 export type ShareNowVehicle = Vehicle & {
   coordinates: CoordinatesTuple;
+  licencePlate: string;
 };
 
 export type VehiclesState = {
@@ -35,6 +36,7 @@ export type VehiclesState = {
 
 export type FreeNowVehicle = Vehicle & {
   coordinate: Coordinates;
+  licencePlate: string;
 };
 
 export type TableVehicle = Omit<Vehicle, 'id' | 'engineType' | 'fuel' | 'condition'> & {
