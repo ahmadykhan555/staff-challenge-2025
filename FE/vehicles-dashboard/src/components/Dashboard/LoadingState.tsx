@@ -2,8 +2,8 @@ import { Skeleton } from '@freenow/wave';
 
 const DashboardLoadingState = () => (
   <>
-    <Skeleton animated className="border !bg-slate-50 !w-full md:!h-1/3" />
-    <Skeleton animated className="border !bg-slate-50 w-full flex-1" />
+    <Skeleton animated={'true'} className="border !bg-slate-50 !w-full md:!h-1/3" />
+    <Skeleton animated={'true'} className="border !bg-slate-50 w-full flex-1" />
   </>
 );
 

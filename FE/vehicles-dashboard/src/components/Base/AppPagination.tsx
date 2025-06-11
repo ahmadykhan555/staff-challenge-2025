@@ -49,7 +49,7 @@ const AppPagination: React.FC<Props> = ({
 
       {pagesToShow.map((pageNumber, idx) => (
         <span
-          key={idx}
+          key={`pagination-control-page-${idx}`}
           className={`border flex-1 border-transparent text-center  ${pageNumber === activePage ? 'font-bold' : ''}`}
         >
           {pageNumber}

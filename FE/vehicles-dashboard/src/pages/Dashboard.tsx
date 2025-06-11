@@ -138,6 +138,7 @@ const Dashboard: React.FC = () => {
                   const mappedData = transformVehicleToTableRow(entry);
                   return (
                     <VehicleInfoRow
+                      key={`vehicle-info-row-${entry.id}`}
                       vehicle={mappedData}
                       activeRowId={selectedVehicle?.licencePlate || ''}
                       onRowClicked={(licencePlate) => handleVehicleSelected(licencePlate)}
