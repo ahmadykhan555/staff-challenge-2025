@@ -6,10 +6,9 @@ import { useEffect, useState } from 'react';
 import L from 'leaflet';
 
 export default function useVehiclesMap() {
-  const { selectedVehicle, vehiclesForCurrentPage } = useAppSelector((state) => ({
-    selectedVehicle: state.vehiclesReducer.selectedVehicle,
-    vehiclesForCurrentPage: state.vehiclesReducer.vehiclesForCurrentPage,
-  }));
+  const { selectedVehicle, vehiclesForCurrentPage } = useAppSelector(
+    (state) => state.vehiclesReducer
+  );
 
   const dispatch = useAppDispatch();
   const handleSelectedMarker = (coordinates: LatLngExpression) => {

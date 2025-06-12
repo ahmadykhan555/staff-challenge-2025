@@ -2,7 +2,7 @@ import React from 'react';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import DashboardLoadingState from '../components/Dashboard/LoadingState';
 import DashboardEmptyState from '../components/Dashboard/EmptyState';
-import VehiclesMap from '../components/Dashboard/VehiclesMap';
+import VehiclesMap from '../components/Dashboard/VehiclesMap/VehiclesMap';
 import VehiclesTable from '../components/Dashboard/VehiclesTable';
 import useVehiclesData from '../hooks/useVehiclesData';
 

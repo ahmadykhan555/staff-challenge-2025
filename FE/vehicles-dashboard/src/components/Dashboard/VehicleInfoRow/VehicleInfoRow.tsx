@@ -1,7 +1,7 @@
-import type { TableVehicle } from '../../types';
-import AppBadge from '../Base/AppBadge';
-import VehicleIcon from '../Base/VehicleIcon';
-import VehicleCondition from './VehicleCondition';
+import type { TableVehicle } from '../../../types';
+import AppBadge from '../../Base/AppBadge';
+import VehicleIcon from '../../Base/VehicleIcon';
+import VehicleCondition from '../VehicleCondition';
 
 const VehicleInfoRow: React.FC<{
   vehicle: TableVehicle;
@@ -50,6 +50,7 @@ const VehicleInfoRow: React.FC<{
         <td
           className="p-3 max-xl:!max-w-[200px] text-center text-sm whitespace-nowrap overflow-hidden text-ellipsis capitalize"
           key={idx}
+          data-testid={vehicle[key as keyof TableVehicle]}
         >
           {renderComponentForProperty(key as keyof TableVehicle)}
         </td>

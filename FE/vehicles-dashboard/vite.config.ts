@@ -24,5 +24,11 @@ export default defineConfig(({ mode }) => {
     server: {
       ...serverConfig,
     },
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: './src/setupTests.ts',
+      include: ['src/**/*.{test,spec}.{ts,js,tsx,jsx}'],
+    },
   };
 });

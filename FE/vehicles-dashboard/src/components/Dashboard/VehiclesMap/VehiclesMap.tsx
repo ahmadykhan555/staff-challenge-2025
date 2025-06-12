@@ -1,5 +1,5 @@
-import AppMap from '../AppMap';
-import useVehiclesMap from '../../hooks/useVehiclesMap';
+import AppMap from '../../AppMap';
+import useVehiclesMap from '../../../hooks/useVehiclesMap';
 
 const VehiclesMap: React.FC = () => {
   const { handleSelectedMarker, mapBounds, selectedVehicle, vehiclesForCurrentPage } =
